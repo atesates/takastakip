@@ -1,0 +1,113 @@
+﻿@model KatilimDetayViewModel
+@{
+    ViewBag.Title = "Katılımlar |  Takas Takip";
+
+    var getAjaxKatilimlar = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("GetKatilimlar", "Katilim"),
+        HttpMethod = "GET",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+}
+@if (TempData["MessageSuccess"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-success">
+        <i class="fa fa-info-circle fa-2x"></i>
+
+        @TempData["MessageSuccess"]
+    </div>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-2">
+                <h5>
+                    Tüm Katılımlar
+                </h5>
+            </div>
+            <div class="col-3">
+
+            </div>
+            <div class="col-4">
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="partialView" class="row sayfaPartialBolum">
+            @*-----------------KatilimDetaypartialViewPartialView-------------------------*@
+        </div>
+    </div>
+</div>
+@using (Ajax.BeginForm(null, null, getAjaxKatilimlar, new { id = "formKatilimlar" }))
+{
+    @Html.Hidden("page")
+}
+
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    @Scripts.Render("~/bundle/ajax")
+
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 1000);
+
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#eczaneTablo tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+                if ($(this).val().length == 0) {
+                    getPaging($("#page").val())
+                }
+            });
+
+            $('#btnExceleAktar').click(function () {
+                // alert('ConfirmSubmit')
+                exportToExcel();
+                //location.reload();
+            });
+            function exportToExcel() {
+                var htmls = "";
+                var uri = 'data:application/vnd.ms-excel;base64,';
+                var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+                var base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                };
+
+                var format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                };
+
+                htmls = $("table").html();
+
+                var ctx = {
+                    worksheet: 'Worksheet',
+                    table: htmls
+                }
+
+                var link = document.createElement("a");
+                link.download = "export.xls";
+                link.href = uri + base64(format(template, ctx));
+                link.click();
+            }
+
+            $('#formKatilimlar').submit();
+
+
+
+        });
+
+    </script>
+}

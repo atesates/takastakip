@@ -1,0 +1,60 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Eczane
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h4>Details</h4>
+
+<div>
+    <h4>Eczane</h4>
+    <hr />
+    <dl class="dl-horizontal">
+          
+        <dt>
+            @Html.DisplayNameFor(model => model.Adres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FaturaAdSoyad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FaturaAdSoyad)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Sehir.Adi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sehir.Adi)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VergiDairesi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VergiDairesi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VergiNumarasi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VergiNumarasi)
+        </dd>
+
+    </dl>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Geri Dön", "Index", new { @class = "btn btn-warning" })
+</p>

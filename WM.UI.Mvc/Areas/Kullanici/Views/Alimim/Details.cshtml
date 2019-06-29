@@ -1,0 +1,47 @@
+﻿@model WM.Northwind.Entities.ComplexTypes.IlacTakip.AlimDetay
+@{
+    ViewBag.Title = "Details";
+}
+
+<h4>Alım Detay</h4>
+
+<div>
+    <h4>Alım</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Teklifler.FirstOrDefault().KayitTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teklifler.FirstOrDefault().KayitTarihi)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.AlimTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlimTarihi)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Teklifler.FirstOrDefault().BaslangicTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teklifler.FirstOrDefault().BaslangicTarihi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Teklifler.FirstOrDefault().BitisTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teklifler.FirstOrDefault().BitisTarihi)
+        </dd>*@
+    </dl>
+
+</div>
+<p>
+    @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Geri Dön", "Index", new { @class = "btn btn-warning" })
+</p>

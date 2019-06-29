@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Eczane>
+@{
+    ViewBag.Title = "Eczane |  Takas Takip";
+}
+<h4>
+    Eczane
+
+    @* <a class="btn btn-outline-success ml-5" href="@Url.Action("Create", "Eczane", new { area= "Kullanici" })"><span class="fa fa-plus"></span> Yeni Kayıt</a>*@
+</h4>
+@if (TempData["MessageSuccess"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-success">
+        <i class="fa fa-info-circle fa-2x"></i>
+
+        @TempData["MessageSuccess"]
+    </div>
+}
+<div class="well">
+    <div class="form-inline">
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+            </div>
+            <input type="text" id="myInput" class="form-control" placeholder="Ara.." aria-label="Ara.." aria-describedby="basic-addon1">
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<table class="table table-sm table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Adi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EczaneGln)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefon2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adres)
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody id="eczaneTablo">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefon)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefon2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adres)
+                </td>
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0,1)">
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg" })
+                        @*@Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "btn btn-outline-primary btn-sm fa fa-info-circle fa-lg" })
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger btn-sm fa fa-remove fa-lg" })*@
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 500);
+
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#eczaneTablo tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

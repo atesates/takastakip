@@ -1,0 +1,998 @@
+﻿@model IEnumerable<TeklifDetayAlimDetaylarViewModel>
+
+@*----------------loading gif--------------------*@
+<div class="row">
+    <div class="col-lg-3">
+    </div>
+    <div class="col-lg-4">
+        <div id="loading" align="center" style="margin-top: 10%">
+            <img src="~/Content/images/orig.gif" />
+        </div>
+    </div>
+    <div class="col-lg-4">
+    </div>
+</div>
+<!-- Renk Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Açıklamalar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>Renklerin Anlamları:</h6>
+                <div class="arkaPlanRengiAktif">Aktif</div>
+                <div class="arkaPlanRengiPasif">Pasif</div>
+                <div class="arkaPlanRengiBeklemede">Beklemede</div>
+                <div class="arkaPlanRengiKapandi">Kapandı</div>
+                <hr />
+                <h6>İç satırlar Alım Durmuna Göre:</h6>
+                <div class="arkaPlanRengiBeklemede">Bekleniyor</div>
+                <div class="arkaPlanRengiBarkodluGonderildi">Barkodlu Gönderildi</div>
+                <div class="arkaPlanRengiBarkodsuzGonderildi">Barkodsuz Gönderildi</div>
+                <div class="arkaPlanRengiAktif">Eczane Stoğunda</div>
+                <div class="arkaPlanRengiPasif">Yanlış İlaç Gönderimi</div>
+                <hr />
+                <h6>Tablo Kullanımı:</h6>
+                + işaretine basınca o tekliflerden yapılan alımları görebilirsiniz.
+                Mavi ile yazılmış alanlara çift tıklayarak değiştirebilirsiniz.
+                Grafiklerin ayrıntısını görmek için grafiklere tıklayabilirsiniz.
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Grafik Modal -->
+<div class="modal fade" id="modalGrafik" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Oranlar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="chartContainer"  style="height:200px; width:300px">
+         
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*--------------------table----------------------*@
+<div id="div1" style="visibility:hidden" class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-2">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" id="myInput" class="form-control filtreDropDown" placeholder="Tekliflerde Ara.." aria-label="Ara.." aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-2">
+                <div id="ddlteklifDurumu" class="form-group mr-3">
+
+                    @Html.DropDownList("TeklifDurumIdFilter", null, htmlAttributes: new
+               {
+                   @class = "form-control filtreDropDown",
+                   @id = "teklifDurumId"
+                   ,
+                   onchange = "filterTeklifDurum(event)"
+
+               }, optionLabel: "Filtre; Teklif Durum Seç"
+                  )
+                </div>
+            </div>
+            <div class="col-2">
+                <div id="ddlalimDurumu" class="form-group mr-3">
+
+                    @Html.DropDownList("AlimDurumIdFilter", null, htmlAttributes: new
+               {
+                   @class = "form-control filtreDropDown",
+                   @id = "alimDurumId"
+                   ,
+                   onchange = "filterAlimDurum(event)"
+
+               }, optionLabel: "Filtre; Alım Durum Seç"
+                  )
+                </div>
+            </div>
+            <div class="col-2">
+                @if (TempData["MessageSuccess"] != null)
+                {
+                    @*<p>&nbsp;</p>*@
+                    <div class="alert alert-success">
+                        <i class="fa fa-info-circle fa-x"></i>
+
+                        @TempData["MessageSuccess"]
+                    </div>
+                }
+                @if (TempData["MessageDanger"] != null)
+                {
+
+                    <div class="alert alert-danger">
+                        <i class="fa fa-info-circle fa-x"></i>
+
+                        @TempData["MessageDanger"]
+                    </div>
+                }
+            </div>
+            <div class="col-2">
+                <!-- Button trigger renk modal -->
+                <div class="pull-right" title="Açıklamalar">
+                    <button type="button" class="btn btn-warning fa fa-exclamation-triangle" data-toggle="modal" data-target="#exampleModal"></button>
+
+                </div>
+                <button class="btn btn-dark btn-sm" type="button" id="btnExceleAktar">
+                    <i class="fa fa-file-excel-o text-success"></i> Excele Aktar
+                    <i class="fa fa-download"></i>
+                </button>
+            </div>
+            <div class="col-2">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" id="myInputForSubGrid" class="form-control filtreDropDown" placeholder="Alımlarda Ara.." aria-label="Ara.." aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*----------------search-----and alert--------------------*@
+
+    <div id="main" class="col-12">
+        @Html.Hidden("expandedList")
+        <table class="table table-sm table-hover" id="gridT">
+            <thead class="thead-light tableRowDesign">
+                <tr>
+                    <th style="width:1%">
+                    </th>
+                    @*<th id="hepsiniAcKapa" class="hoverEffforHeader collapsemForHeader">
+
+                        </th>*@
+                    <th style="width:1%">
+                        <input class="" id="checkAll" type="checkbox" />
+                    </th>
+                    <th style="width:28%">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.IlacAdi)
+                    </th>
+                    <th class="tableOrdinaryColumns"  title="Mal fazlası dahil">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.ToplamTeklifMiktari)
+                    </th>
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.MalFazlasi)
+                    </th>
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().ToplamAlimMiktari)
+                    </th>
+
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().Kalan)
+                    </th>
+                    <th class="tableOrdinaryColumns"  title="Toplam Alım Miktarı(M.F. dahil) / Teklif Miktarı">
+                        Oran
+                    </th>
+
+                    <th class="tableOrdinaryColumns">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.NetFiyat)
+                    </th>
+
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.DepoFiyat)
+                    </th>
+
+
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.EtiketFiyati)
+                    </th>
+                    <th class="tableOrdinaryColumns" >
+                        Min-Maks
+                    </th>
+                    <th class="tableOrdinaryColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.TeklifDurumAdi)
+                    </th>
+                    <th class="tableOrdinaryMediumColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.TeklifTurAdi)
+                    </th>
+                    <th class="tableOrdinaryBigColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.YayinlamaTurAdi)
+                    </th>
+                    <th class="tableOrdinaryMediumColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.BaslangicTarihi)
+                    </th>
+                    <th class="tableOrdinaryMediumColumns" >
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TeklifDetay.BitisTarihi)
+                    </th>
+                    <th style="width:2%">
+                        İşlem
+                    </th>
+                    <th style="width:2%" >
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.ToList())
+                {
+                    <tr id="nester_@item.TeklifDetay.Id" class="tableRowDesign">
+                        <td></td>
+                        <td>
+                            <input class="gridCheckBox" id="teklifDetay_@item.TeklifDetay.Id"
+                                   value="@item.TeklifDetay.Id" type="checkbox" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.IlacAdi)
+                        </td>
+                        <td id="ttm_@item.TeklifDetay.Id">
+                            @Html.DisplayFor(model => item.TeklifDetay.ToplamTeklifMiktari)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.MalFazlasi)
+                        </td>
+                        <td id="tya_@item.TeklifDetay.Id">
+
+                            @Html.DisplayFor(model => item.AlimDetaylar.FirstOrDefault().ToplamAlimMiktari)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.AlimDetaylar.FirstOrDefault().Kalan)
+                        </td>
+
+                        <td title="Ayrıntı için tıklayınız" class="myCharts" id="@item.TeklifDetay.Id">
+
+                            <span class="pie">@Html.DisplayFor(model => item.AlimDetaylar.FirstOrDefault().ToplamAlimMiktari)/@Html.DisplayFor(model => item.TeklifDetay.ToplamTeklifMiktari)</span>
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.NetFiyat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.DepoFiyat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.EtiketFiyati)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.Minimum)-@Html.DisplayFor(model => item.TeklifDetay.Maksimum)
+                        </td>
+                        <td title="değiştirmek için çift tıklayın" style="cursor: pointer; color:blue" id="tkd_@item.TeklifDetay.Id">
+
+                            @Html.DisplayFor(model => item.TeklifDetay.TeklifDurumAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.TeklifTurAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.YayinlamaTurAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.BaslangicTarihi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.TeklifDetay.BitisTarihi)
+                        </td>
+                        <td>
+
+                            @Html.ActionLink(" ", "Edit", new { id = item.TeklifDetay.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+                        </td>
+                        <td>
+
+                            @* @Html.ActionLink(" ", "Details", new { id = item.TeklifDetay.Id }, new { @class = "btn btn-outline-primary btn-sm fa fa-info-circle fa-lg", @title = "Detay" })*@
+                            @*@Html.ActionLink(" ", "Delete", new { id = item.TeklifDetay.Id }, new { @class = "btn btn-outline-danger btn-sm fa fa-trash fa-lg", @title = "Sil" })*@
+                            @if (item.TeklifDetay.BuTekliftenYapilanAlimSayisi == 0)
+                            {
+                                <button type="button" title="Sil" id="sil_@item.TeklifDetay.Id" class="btn btn-sm btn-outline-danger fa fa-trash tekliSil"
+                                        data-toggle="modal" data-target="#mySilModal"></button>
+                                @*<i class="" aria-hidden="true"></i>*@
+
+                                @*<a class="btn btn-outline-danger py-0 btn-sm" title="Sil" href="@Url.Action("Delete", null, new { id = item.Id, area= "EczaneNobet" })"><span class="fa fa-trash"></span></a>*@
+
+                            }
+                            @*@Html.ActionLink(" ", "Create", "Alimim", new { area = "Kullanici", id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-shopping-cart fa-lg", @title = "AL" })*@
+
+
+                        </td>
+                        <td>
+
+                            <table class="table table-sm table-hover" id="subT">
+                                <thead class="thead-light tableInnerRowDesign">
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().EczaneAdi)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().Miktar)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().AlimTarihi)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().AlimDurumAdi)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().ITStransferDurumAdi)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().GonderimTarihi)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FirstOrDefault().AlimDetaylar.FirstOrDefault().TeslimAlimTarihi)
+                                        </th>
+                                        <td style="display:none">
+                                            @Html.DisplayFor(model => item.TeklifDetay.IlacAdi)
+                                        </td>
+                                        <td style="display:none">
+                                            @Html.DisplayFor(model => item.TeklifDetay.TeklifTurAdi)
+                                        </td>
+                                        <td style="display:none">
+                                            @Html.DisplayFor(model => item.TeklifDetay.YayinlamaTurAdi)
+                                        </td>
+                                        <td style="display:none">
+                                            @Html.DisplayFor(model => item.TeklifDetay.TeklifDurumAdi)
+                                        </td>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var subItem in item.AlimDetaylar)
+                                    {
+                                        <tr id="subtr_@subItem.Id" class="tableInnerRowDesign" name="subtr_@subItem.AlimDurumId">
+                                            <td>
+                                                @*<input class="subGridCheckBox" id="alimDetay_@subItem.Id"
+                                                    value="@subItem.Id" type="checkbox" />*@
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => subItem.EczaneAdi)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => subItem.Miktar)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => subItem.AlimTarihi)
+                                            </td>
+                                            <td title="değiştirmek için çift tıklayın" style="cursor: pointer; color:blue" id="ald_@subItem.Id">
+                                                @Html.DisplayFor(model => subItem.AlimDurumAdi)
+                                            </td>
+                                            <td title="değiştirmek için çift tıklayın" style="cursor: pointer; color:blue" id="its_@subItem.Id">
+
+                                                @Html.DisplayFor(model => subItem.ITStransferDurumAdi)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => subItem.GonderimTarihi)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => subItem.TeslimAlimTarihi)
+                                            </td>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(model => item.TeklifDetay.IlacAdi)
+                                            </td>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(model => item.TeklifDetay.TeklifTurAdi)
+                                            </td>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(model => item.TeklifDetay.YayinlamaTurAdi)
+                                            </td>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(model => item.TeklifDetay.TeklifDurumAdi)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+        @*--------------------pager----------------------*@
+        <div id="myPaging"></div>
+    </div>
+    @if (Model.Count() > 0)
+    {
+    }
+    else
+    {
+    <div class="=col-8">
+        <div class="alert alert-info alert-dismissible fade show mt-2" role="alert">
+            <i class="fa fa-info-circle"></i> Hiç teklifiniz yok.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    }
+</div>
+
+@*<span class="pie">109/110</span>
+    <span class="pie">110/110</span>
+    <span class="pie">100/110</span>
+    <span class="pie">90/110</span>*@
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/ajax")
+    @Scripts.Render("~/bundle/scriptsDetailTable/script")
+    @Scripts.Render("~/bundle/queryui/scripts")
+}
+<script>
+
+
+    setTimeout(function () {
+        $('.alert-success').addClass("elemaniUcur");
+    }, 2000);
+    setTimeout(function () {
+        $('.alert-danger').addClass("elemaniUcur");
+    }, 2000);
+    //modal e grafik çıkarır:
+    function getCanvas(teklifId)
+    {
+        var toplamTeklifMiktari = "110"
+        var toplamAlimMiktari = "350"
+        var myArray = new Array();
+        var myDataPoints = new Array();
+        var kalan = "10"
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: "../../../Kullanici/Teklifim/getBuTekliftenYapilanToplamAlimMiktari",
+            data: {
+                Id: teklifId
+            },
+            success: function (data) {
+                //alert('success');
+                var sonuclar = JSON.parse(JSON.stringify(data));  
+                $.each(sonuclar.Alimlar, function (index, n) {
+                    myArray.push({
+                        AlimYapanEczane: n.EczaneAdi,
+                        Miktar: n.Miktar.toFixed(0),
+                    });
+                });
+
+               
+                //alert(myArray[0].AlimYapanEczane)
+                //alert(myArray[0].Miktar)
+                $.each(myArray, function (index, n) {
+                    myDataPoints.push({
+                         y: n.Miktar,
+                        indexLabel: n.AlimYapanEczane + "  {y}",
+                         legendText: n.AlimYapanEczane,
+                         indexLabelFontSize: 18,
+                    });
+                });
+                myDataPoints.push({
+                    y: sonuclar.Kalan,
+                    indexLabel: "Kalan" + " {y}",
+                    legendText: "Kalan",
+                    indexLabelFontSize: 18,
+                });
+                //$.each(myDataPoints, function (index, n) {
+                //    alert(n.y)
+                //    alert(n.indexLabel)
+                //    alert(n.legendText)
+                //    alert(n.indexLabelFontSize)
+                //});
+
+                toplamTeklifMiktari = sonuclar.ToplamTeklifMiktari
+                toplamAlimMiktari = sonuclar.BuTekliftenYapilanToplamAlimMiktari
+                kalan = sonuclar.Kalan
+                var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        title: {
+                            text: "Toplam Teklif Miktarı: " + toplamTeklifMiktari,
+                            fontSize: 20
+                        },
+                        animationEnabled: true,
+                        data: [
+                            {
+                                type: "pie",
+                                startAngle: 270,
+                                fontsize: 22,
+                               // toolTipContent: "{legendText}: {y} - <strong> #percent% </strong>",
+                                showInLegend: false,
+                                dataPoints: myDataPoints
+                                //dataPoints: [
+
+                                //    { y: toplamAlimMiktari, indexLabel: "Toplam alım miktarı" + " #percent%", legendText: "Toplam alım", indexLabelFontSize: 18 },
+                                //    { y: kalan, indexLabel: "Kalan" + " #percent%", legendText: "Kalan", indexLabelFontSize: 18 }
+                              
+                                //]
+                            }
+                        ]
+                    });
+                chart.render();
+
+                $('#modalGrafik').modal('toggle');
+
+
+            },
+            error: function (request, textStatus, thrownError) {
+                alert(request.status);
+                alert(thrownError);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        var model = @Html.Raw(Json.Encode(Model));
+        //alert('model')
+        //-----------------------myPaging-------------------------
+        var totalRow = model.length;
+        //alert(totalRow)
+        var pageSize = 10;
+        var totalPage = 0
+        var currentPage = 1
+        if (totalRow != 0 && pageSize != 0) {
+            totalPage = Math.ceil(totalRow / pageSize);
+            currentPage = model[0].Pager.CurrentPage;
+        }
+        //alert('0')
+        //alert(currentPage)
+        function makeActive(curPage) {
+            //alert( (curPage - 1) )
+            $("#myPaging > ul.pagination > li").each(function (i, el) {
+                if (i == (curPage))
+                    $(this).addClass("active");
+                else
+                    $(this).removeClass("active")
+            });
+        }
+        function CreatePagingButtons() {
+            //alert('totalPage: ' + totalPage)
+            var curPage = model[0].Pager.CurrentPage;
+            //tablo içindeki controllera gönderilen çağrılar bu değeri kullanıyor, geri dönünce aynı sayfaya gelsin diye:
+            $("#page").val(curPage)
+            //alert('curPage: ' + curPage)
+            //myPaging div e ul eklenir
+           
+
+            $("#myPaging").prepend("<ul class=\"pagination tableRowDesign\"></ul>");
+            //ileri tuşu eklenir
+            $("#myPaging > ul.pagination").prepend(
+                $("<li id=\"totalItems\" class=\"udo\"><a class=\"page-link\" >Toplam Satır: " + totalRow + " </a> </li>")
+            );
+            $("#myPaging > ul.pagination").prepend(
+                $("<li id=\"lastPage\" class=\"udo\"><a class=\"page-link\" ><i class=\"fa fa-fast-forward\"></a></li>")
+            );
+            //sayılar eklenir
+            $("#myPaging > ul.pagination").each(function (i, el) {
+                for (var i = 0; i < totalPage; i++) {
+                    if (i == totalPage - (curPage - 1) - 1)
+                        $(this).prepend("<li  class=\"page-item active\"></li>");
+                    else
+                        $(this).prepend("<li  class=\"page-item\"></li>");
+                }
+            });
+            //sayılara page-link classı eklenir
+            $("#myPaging > ul > li.page-item").each(function (i, el) {
+                $(this).prepend(
+                    $("<a id=\"page_Link_" + i + "\" >" + (i + 1) + "</a>").addClass("page-link")
+                );
+            });
+            //geri tuşu eklenir
+            $("#myPaging > ul.pagination").prepend(
+                $("<li id=\"firstPage\" class=\"udo\"><a class=\"page-link\" ><i class=\"fa fa-fast-backward\"></a></li>")
+            );
+            //sayılara basınca ne olcağını .on ile belirledik
+            $("#myPaging > ul > li.page-item").on("click", function () {
+                //alert($(this).text());              
+                //alert('pageSize: ' + pageSize)  
+                $("#page").val($(this).text())             
+                getPaging($(this).text())
+                makeActive($(this).text())
+            });
+            //oklara basınca ne olcağını .on ile belirledik
+            $("#myPaging > ul > li.udo").on("click", function () {
+                //alert(this.id);
+                if (this.id == "firstPage") {
+                    $("#page").val(1)
+                    getPaging(1)
+                    makeActive(1)
+                }
+                else {
+                    $("#page").val(totalPage)
+                    getPaging(totalPage)
+                    makeActive(totalPage)
+                }
+            });
+        }
+        function getPaging(prCurrentPage) {
+            $("#main #gridT > tbody > tr td.expandm").each(function (i, el) {
+                $(this).toggleClass("expandm collapsem");
+                $(this).parent().closest("tr").next().slideToggle(1);
+            });
+            $("#main #gridT > tbody > tr.gridtr").each(function (i, el) {
+                if (i >= pageSize * (prCurrentPage - 1) && i < pageSize * prCurrentPage) {
+                    $(this).css('display', 'table-row');
+                }
+                else {
+                    $(this).css('display', 'none');
+                }
+            });
+        }
+        //modaldaki büyük grafiği oluşturur
+        $(".myCharts").click(function () {
+            // alert(this.id)
+            getCanvas(this.id)
+        });
+        //alert('1')
+
+        //table daki row lardaki küçük grafikleri oluşturur
+        $("span.pie").peity("pie")
+        //alert('2')
+
+        //------------------searching-----------------     
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLocaleLowerCase('tr-TR');
+            $("#gridT tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLocaleLowerCase('tr-TR').indexOf(value) > -1);
+            });
+            if ($(this).val().length == 0) {
+                afterSearchingSetExpand()
+                getPaging($("#page").val())
+            }
+        });
+        $("#myInputForSubGrid").on("keyup", function () {
+            //arama başlayınca tüm alt satırları aç
+            $("#main #gridT > tbody > tr td.collapsem").each(function (i, el) {
+                $(this).parent().closest("tr").next().slideToggle(1);
+                $(this).toggleClass("expandm collapsem");
+            });
+            //eşleşmeyen satırları kapat
+            var value = $(this).val().toLocaleLowerCase('tr-TR');
+            $("#subT tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLocaleLowerCase('tr-TR').indexOf(value) > -1);
+            });
+            //arama bitince yani arama kelimesi uzunluğu sıfır olunca tüm açılan satırları kapat
+            if ($(this).val().length == 0) {
+                $("#main #gridT > tbody > tr td.expandm").each(function (i, el) {
+                    $(this).toggleClass("expandm collapsem");
+                    $(this).parent().closest("tr").next().slideToggle(1);
+                });
+            }
+            //alım aramasında satırların hepsini açıp aramadan önceki durumu kaybettiğimiz için aramadan önceki hale dönemedik
+        });
+        function afterSearchingSetExpand() {
+            $("#main #gridT > tbody > tr td.collapsem").each(function (i, el) {
+                var compareString = model[i].TeklifDetay.Expanded;
+                if (!compareString) {
+                    //kapalıysa, default açık geri geldiği için kapatsın, açıksa açık kalsın
+                    $(this).parent().closest("tr").next().slideToggle(1);
+                }
+                else {//açıksa, default + geri geldiğin için - yapsın,
+                    $(this).toggleClass("collapsem expandm");
+                }
+            });
+            // daha sonradan yapılan değişiklik sebebiyle subGrid de veri olmayan başlıklar da kapansın aramadan sonra:
+            $("#main #gridT > tbody > tr td.expand").each(function (i, el) {
+                $(this).parent().closest("tr").next().slideToggle(1);
+            });
+            //getPaging(model[0].Pager.CurrentPage)
+
+        }
+        //alert('3')
+        var expandedIDs = new Array();
+        //alert('4')
+        $("#checkAll").click(function () {//başlıktaki check ile tüm teklifler check edilir, alımlar edilmez
+
+            $(".gridCheckBox").prop('checked',
+                $(this).prop('checked'));
+
+            //$(".subGridCheckBox").prop('checked',
+            //    $(this).prop('checked'));
+
+        });
+        //alert('5')
+        //header hepsini açıp kapatır
+        $(".hoverEffforHeader").click(function () {
+            var compareStringForClass = $(this).attr("class");
+            //alert('compareStringForClass: ' + compareStringForClass)
+
+            if (compareStringForClass == "hoverEffforHeader collapsemForHeader") {
+                $("#main #gridT > tbody > tr td.collapsem").each(function (i, el) {
+                    $(this).parent().closest("tr").next().slideToggle(100);
+                    $(this).toggleClass("expandm collapsem");
+                    expandedIDs.push(model[i].TeklifDetay.Id);
+                    $("#expandedList").val(expandedIDs);
+                });
+            }
+            else {
+                $("#main #gridT > tbody > tr td.expandm").each(function (i, el) {
+                    $(this).parent().closest("tr").next().slideToggle(100);
+                    $(this).toggleClass("expandm collapsem");
+                    expandedIDs.pop(model[i].TeklifDetay.Id);
+                    $("#expandedList").val(expandedIDs);
+                });
+
+            }
+            $(this).toggleClass("expandmForHeader collapsemForHeader");
+        });
+        veriyiGizleLoadingGifiGoster();
+        //alert('6')
+        createNestedTable();
+        checkBeforeChecked();
+        //alert('7')
+
+        function createNestedTable() {
+            //nested table
+            //alt satırlar arka plan rengi
+            $("#main #gridT > tbody > tr").each(function (i, el) {//i 11 ??
+                $("#main #subT > tbody > tr").each(function (i, el) {
+                    var subTr_id = $(this).attr('name')
+                    //alert('subTr_id: ' + subTr_id)
+                    var id = subTr_id.substr(6, subTr_id.length - 6);
+                    //alert('id: ' + id)
+                    var alimDurumId = id
+                    //alert(alimDurumId);
+                    if (alimDurumId == 1)
+                        $(this).addClass("arkaPlanRengiBeklemede")
+                    else if (alimDurumId == 2)
+                        $(this).addClass("arkaPlanRengiBarkodluGonderildi")
+                    else if (alimDurumId == 3)
+                        $(this).addClass("arkaPlanRengiBarkodsuzGonderildi")
+                    else if (alimDurumId == 4)
+                        $(this).addClass("arkaPlanRengiAktif")
+                    else if (alimDurumId == 5)
+                        $(this).addClass("arkaPlanRengiPasif")
+                });
+            });
+            var size = $("#main #gridT > thead > tr >th").length; // get total column
+            // alert('size: ' + size);
+            $("#main #gridT > thead > tr >th").last().remove(); // remove last column
+            $("#main #gridT > thead > tr").prepend("<th></th>"); // add one column at first for collapsible column
+            $("#main #gridT > tbody > tr").each(function (i, el) {
+                $(this).addClass("gridtr")
+
+                var teklifDetayid = model[i].TeklifDetay.Id;
+                //satırların arka plan renkleri
+                if (model[i].TeklifDetay.TeklifDurumId == 1)
+                    $(this).addClass("arkaPlanRengiAktif")
+                else if (model[i].TeklifDetay.TeklifDurumId == 2)
+                    $(this).addClass("arkaPlanRengiPasif")
+                else if (model[i].TeklifDetay.TeklifDurumId == 3)
+                    $(this).addClass("arkaPlanRengiBeklemede")
+                else if (model[i].TeklifDetay.TeklifDurumId == 4)
+                    $(this).addClass("arkaPlanRengiKapandi")
+
+
+                //alert('teklifDetayid: ' + teklifDetayid)
+                //alt sırada veri yoksa + işareti boşuna gelmesin ve kullanıcıya boşuna tıklatmayalım:
+                if (model[i].AlimDetaylar[0]) {//alt satırda veri varsa
+                    $(this).prepend(
+                        $("<td id=\"" + teklifDetayid + "\" ></td>")//sytle=\"width:150px\"
+                            .addClass("expandm")//Site.css e bak
+                            .addClass("hoverEff")
+                        // .attr('title', "Bu tekliften yapılan diğer alimlar için tıklayınız")
+                    );
+                }
+                else {
+                    $(this).prepend(
+                        $("<td id=\"" + teklifDetayid + "\" ></td>")//sytle=\"width:150px\"
+                            .addClass("expand")
+                        //.addClass("hoverEff")
+                        // .attr('title', "Bu tekliften yapılan diğer alimlar için tıklayınız")
+                    );
+
+                }
+                //Now get sub table from last column and add this to the next new added row
+                var table = $("table", this).parent().html();
+                //alert(table)
+                //add new row with this subtable
+                $(this).after("<tr class=\"subtr\"><td></td><td  style='padding:5px; margin:0px; font-size:smaller;' colspan='" + (size - 1) + "'>" + table + "</td></tr>");
+                $("table", this).parent().remove();
+            });
+            //alt satırda veri yoksa açılnasın diye expand classı oluşturuldu. expandm ise veri olan alt satılar için
+            $("#main #gridT > tbody > tr td.expand").each(function (i, el) {
+                $(this).parent().closest("tr").next().slideToggle(1);
+            });
+            //by default make all subgrid in collapse mode
+            $("#main #gridT > tbody > tr td.expandm").each(function (i, el) {
+                $(this).toggleClass("expandm collapsem");
+                $(this).parent().closest("tr").next().slideToggle(1);
+                //alert('i: ' + i)
+                //alert(' model[i].TeklifDetay.Expanded: ' + model[i].TeklifDetay.Expanded);
+                // alert(' model[i].TeklifDetay): ' + model[i].TeklifDetay.Id);
+                var compareString2 = model[i].TeklifDetay.Expanded;//grid de genişletilmiş satırlar genişletilmiş gösterilir
+                var cls1 = $(this).attr("class").split(' ');
+                //alert('cls1: ' + cls1);
+                //alert('compareString2: ' + compareString2);
+                //alert('model[i].TeklifDetay.Id : ' + model[i].TeklifDetay.Id);
+                
+                if (true == compareString2) {
+                    //alert('if true model[i].TeklifDetay.Id: ' + model[i].TeklifDetay.Id);
+                    expandedIDs.push(model[i].TeklifDetay.Id);
+                    $("#expandedList").val(expandedIDs);
+                    
+                    $(this).toggleClass("collapsem expandm");
+                    $(this).parent().closest("tr").next().slideToggle(1);//bu çalışmıyor?
+                    var cls2 = $(this).attr("class").split(' ');
+                    //alert('cls2: '+cls2);
+                   
+                }
+            });
+            //set what to do + and - icons
+            //alert('hoverEff');
+            $('.hoverEff').click(function () {
+                $(this).parent().closest("tr").next().slideToggle(100);
+                $(this).toggleClass("expandm collapsem");
+
+                var id = $(this).attr("id");
+                //alert('$(this).attr("id"): ' + id);
+                var compareStringForClass = $(this).attr("class");
+                //alert('compareStringForClass: ' + compareStringForClass);
+                if (compareStringForClass == "hoverEff expandm") {
+                    //alert('if')
+                    expandedIDs.push(id);
+                }
+                else {
+                    //alert('else')
+                    expandedIDs.pop(id);
+                }
+                $("#expandedList").val(expandedIDs);
+                // alert('expandedList :' + $("#expandedList").val());
+            });         
+        }
+        function veriyiGizleLoadingGifiGoster() {
+            document.getElementById("div1").style.visibility = "hidden";//sayfa yüklenirken tablo gizlenir
+            // document.getElementById("div_searching").style.visibility = "hidden";//sayfa yüklenirken tablo gizlenir
+            document.getElementById("loading").style.visibility = "visible";//sayfa yüklenirken loading gif i gösterilir
+            acilisiGeciktir()
+        }
+        function acilisiGeciktir() {
+            setTimeout(
+                loadingGifiGizleVeriyiGoster, /* Request next message  */
+                1 /* ..after ms seconds */
+            );
+        }
+        function loadingGifiGizleVeriyiGoster() {
+            document.getElementById("div1").style.visibility = "visible";//tablo gösterilir
+            // document.getElementById("div_searching").style.visibility = "visible";//sayfa yüklenirken tablo gizlenir
+            document.getElementById("loading").style.visibility = "hidden";//gif gizlenir
+            document.getElementById("loading").style.display = "none";//gif yer kaplamasın
+        }
+        function checkBeforeChecked() {
+            //alert(JSON.stringify(model));
+            // alert(model.length);
+            for (var i = 0; i < model.length; i++) {
+                var compareString = model[i].TeklifDetay.Checked;//grid için bir önceki işlemden check edilenler alınır ve true ise check edilir
+                if (true == compareString) { //compare to the checkbox value
+                    document.getElementById('teklifDetay_' + model[i].TeklifDetay.Id).checked = true;
+                    //continue;
+                }
+
+                //for (var j = 0; j < model[i].AlimDetaylar.length; j++) {//subgrid için aynı işlem tekrarlanır
+                //    var compareString3 = model[i].AlimDetaylar[j].Checked;
+                //    //alert('compareString3: ' + compareString3)
+                //    if (true == compareString3) {
+                //        document.getElementById('alimDetay_' + model[i].AlimDetaylar[j].Id).checked = true;
+                //        //alert(document.getElementById('alimDetay_' + model[i].EczaneGrupDetaylar[j].Id).checked)
+                //        continue;
+                //    }
+                //}
+            }
+        }
+        //alert('8')
+
+        //------------------tekli sil-----------------------
+        $('.tekliSil').on('click', function (e) {
+            //alert('danger')
+            e.preventDefault();
+            //alert(this.id)
+            var sil_id = this.id;
+            var id = sil_id.substr(4, sil_id.length - 4);
+            // alert(id)
+            $("#Id").val(id);
+            //alert($("#Id").val());
+        });
+        //$("#main #gridT > tbody > tr ").click(function () {//başlıktaki check ile tüm teklifler check edilir, alımlar edilmez
+        //     //alert('Row Clicked')
+        //    $(this).next().slideToggle(100);
+        //    $(this).toggleClass("expandm collapsem");
+        //});
+        $("#main #subT > tbody > tr > td ").dblclick(function () {//başlıktaki check ile tüm teklifler check edilir, alımlar edilmez
+
+            //alert('cell Clicked')
+            var subTr_id = this.id;
+            // alert('subTr_id: ' + subTr_id)
+
+            var id = subTr_id.substr(4, subTr_id.length - 4);
+            var alanAdi = subTr_id.substr(0, 3);
+            ///alert(alanAdi)
+            if (alanAdi == "ald") {//alım durumu
+                $('#AlimIDForALD').val(id);
+                $('#myALDModal').modal('toggle');
+            }
+            else if (alanAdi == "its") {//its transfer durumu
+                $('#AlimIDForITS').val(id);
+                $('#myITSModal').modal('toggle');
+            }
+            else {
+                // alert('Bu alanı değiştiremezsiniz');
+            }
+
+        });
+        $("#main #gridT > tbody > tr > td ").dblclick(function () {//başlıktaki check ile tüm teklifler check edilir, alımlar edilmez
+
+            //alert('cell Clicked')
+            var subTr_id = this.id;
+            // alert('subTr_id: ' + subTr_id)
+
+            var id = subTr_id.substr(4, subTr_id.length - 4);
+            var alanAdi = subTr_id.substr(0, 3);
+            if (alanAdi == "tkd") {//teklif durumu
+                //alert('tkd')
+                $('#TeklifIDForTLD').val(id);
+                $('#myTKDModal').modal('toggle');
+            }
+            else {
+                // alert('Bu alanı değiştiremezsiniz');
+            }
+
+        });
+        $('#btnExceleAktar').click(function () {
+            // alert('ConfirmSubmit')
+            exportToExcel();
+            //location.reload();
+        });
+        function exportToExcel() {
+            var htmls = "";
+            var uri = 'data:application/vnd.ms-excel;base64,';
+            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+            var base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            };
+
+            var format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            };
+
+            htmls = $("table").html();
+
+            var ctx = {
+                worksheet: 'Worksheet',
+                table: htmls
+            }
+
+            var link = document.createElement("a");
+            link.download = "export.xls";
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+        }
+        if (totalPage > 1) { 
+            CreatePagingButtons()
+            getPaging(currentPage);
+        }
+        //function filterTeklifDurum() {
+        //    alert($('#TeklifDurumId').val())
+        //    if ($('#TeklifDurumId').val())
+        //        $('#teklifDurumId').val($('#TeklifDurumId').val())
+        //}
+        //alert('9')
+
+    });
+</script>
+

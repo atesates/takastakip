@@ -1,0 +1,115 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Katilim
+
+<h4>Ön Talebe Katıl</h4>
+<h4> @ViewBag.Ilac</h4>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Miktar, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                Min-Max :@ViewBag.Minimum - @ViewBag.Maximum
+                @Html.EditorFor(model => model.Miktar, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "alimmiktari" } })
+                @Html.ValidationMessageFor(model => model.Miktar, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" style="display:none">
+            @Html.LabelFor(model => model.TalepId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TalepId, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                @Html.ValidationMessageFor(model => model.TalepId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" style="display:none">
+            @Html.LabelFor(model => model.EczaneGrupId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EczaneGrupId, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                @Html.ValidationMessageFor(model => model.EczaneGrupId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ekle" id="btnEkle" class="btn btn-sm btn-primary" />
+                @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-sm btn-warning" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 3000);
+
+        $(".datepicker").datepicker({
+            dateFormat: "dd.mm.yy",
+            changeYear: true,
+            monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+            dayNamesMin: ["Pa", "Pt", "Sl", "Ça", "Pe", "Cu", "Ct"],
+            firstDay: 1
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#alimmiktari").val(@ViewBag.Minimum);
+            //alert(parseInt($('#alimmiktari').val()))
+            //alert(@ViewBag.Minimum)
+
+            if (parseInt($('#alimmiktari').val()) > @ViewBag.Maximum
+                || parseInt($('#alimmiktari').val()) < @ViewBag.Minimum ) {
+                $('#btnEkle').UseSubmitBehavior = false;
+                $('#btnEkle').attr("disabled", true);
+            }
+
+            $('#alimmiktari').focus('input', function () {//id
+               // $('#btnEkle').attr("disabled", true);
+
+                setValidations()
+            });
+            $(document).bind('keydown', function (e) {
+                if (e.which === 13) { // return
+                    $('#btnEkle').attr("disabled", true);
+                    setValidations()
+                   // $('#btnEkle').trigger('click');
+                }
+            });
+
+            $('#alimmiktari').focusout('input', function () {//id
+                setValidations()
+            });
+            function setValidations() {
+                var alimMiktari = parseInt($('#alimmiktari').val());
+                var maxNumb = parseInt(@ViewBag.Maximum);
+                var minNumb = parseInt(@ViewBag.Minimum);
+
+                if (alimMiktari > maxNumb) {
+                    $("#alimmiktari").val(maxNumb);
+                    alert(maxNumb + ' dan daha küçük bir değer girmelisiniz')
+                }
+                else if (alimMiktari < minNumb) {
+                    $("#alimmiktari").val(minNumb);
+                    alert(minNumb + ' dan daha büyük bir değer girmelisiniz')
+                }
+                else {
+                   // alert('else')
+                    $('#btnEkle').attr("disabled", false);
+                }
+
+            }
+        });
+    </script>
+}

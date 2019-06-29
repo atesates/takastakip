@@ -1,0 +1,54 @@
+﻿
+@section Styles{
+
+    @Styles.Render("~/bundle/gridmvc/style")
+}
+
+<h4>
+    Eczane Gruplar
+    <a class="btn btn-outline-success ml-5" href="@Url.Action("Create", null, new { area= "Kullanici" })"><span class="fa fa-plus"></span> Yeni Kayıt</a>
+</h4>
+<hr />
+
+<div class="row">
+    @Html.Action("EczaneGrupPartial", null, new { area = "Kullanici" })
+</div>
+
+@section Scripts{
+
+    @Scripts.Render("~/bundle/gridmvc/scripts")
+
+    <script>
+        (function () {
+            var gridName = 'EczaneGrupGrid';
+            var pagingUrl = '/EczaneGrup/EczaneGrupPartialPager';
+            $('.grid-mvc').gridmvc();
+            pageGrids[gridName].ajaxify({
+                getData: pagingUrl,
+                getPagedData: pagingUrl
+            });
+        }())
+
+        //detayları göster
+        //$(function () {
+        //    pageGrids.EczaneNobetGrid.onRowSelect(function (e) {
+        //        $("#detaylar").show();
+
+        //        var data = e.row;
+        //        $("#EczaneId").text(data.EczaneId);
+        //        $("#Eczane").text(data.EczaneAdi);
+        //        $("#FabrikaAdi").text(data.EczaneGrupTanimAdi);
+        //        $("#DepoAdi").text(data.EczaneGrupTanimTipAdi);
+        //        $("#Sonuc").text(data.NobetGrupAdi);
+        //        var myDate = data.EczaneGrupTanimBitisTarihi;
+        //        $("#BitisTarihi").text(myDate);
+
+        //    });
+        //    pageGrids.EczaneNobetGrid.addFilterWidget(new CustomersFilterWidget());
+        //})
+
+    </script>
+
+
+}
+

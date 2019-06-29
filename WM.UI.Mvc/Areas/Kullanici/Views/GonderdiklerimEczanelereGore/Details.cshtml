@@ -1,0 +1,506 @@
+﻿@model AlimDetayViewModel
+
+@if (TempData["MessageSuccess"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-success">
+        <i class="fa fa-info-circle fa-2x"></i>
+
+        @TempData["MessageSuccess"]
+    </div>
+}
+
+<div class="row">
+    <div class="col-5">
+        <h4>
+            Gönderimlerim Düzenle
+        </h4>
+    </div>
+    <div class="col-3">
+        @*<div id="goster" onclick='$("#ColorDetail").show()'>
+                <a href="#">Renkler ne anlama geliyor?</a>
+
+            </div>*@
+    </div>
+    <div class="col-3">
+        <p>
+            <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Renkler ne anlama geliyor?
+            </a>
+
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <div style="background-color:lightsalmon; font-size:smaller;">Its transferi yapılmış.</div>
+                <div style="background-color:lightblue; font-size:smaller;">Barkodlu Gönderildi.</div>
+                <div style="background-color:lightpink; font-size:smaller;">Barkodsuz Gönderildi.</div>
+                <div style="background-color:lightseagreen; font-size:smaller;">Eczane Stoğunda.</div>
+                <div style="background-color:red; font-size:smaller;">Yanlış İlaç Gönderimi.</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr />
+@{
+    SelectList teklifTurler = ViewBag.TeklifTurId;
+    SelectList teklifDurumlar = ViewBag.TeklifDurumId;
+    SelectList yayinlamaTurler = ViewBag.YayinlamaTurId;
+    SelectList ilaclar = ViewBag.IlacId;
+    var kontrol = ViewBag.AlimYapilmisTeklifIdler;
+    var rolId = ViewBag.rolId;
+}
+
+<table class="table  table-sm table-hover">
+    <thead class="thead-light" style="font-size:smaller; height:10px;  text-size-adjust:auto">
+        <tr style="height:10px; font-size:smaller;  text-size-adjust:auto">
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().AlimTarihi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ilaclar.FirstOrDefault().Adi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().EczaneAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().EczaneGln)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().Miktar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().AlimDurumAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlimDetaylar.FirstOrDefault().ITStransferDurumAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeklifDetaylar.FirstOrDefault().NetFiyat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+            </th>
+            <th>
+                İşlem
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.AlimDetaylar)
+    {
+        if (item.ITStransferDurumId == 2)
+        {//ıts transferi yapıldı
+
+            <tr style="height:10px;font-size:smaller;  background-color:lightsalmon; height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (item.AlimDurumId == 1)
+        {//bekleniyor
+            <tr style="height:10px;font-size:smaller;   height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (item.AlimDurumId == 2)
+        {//barkodlu gönderildi
+            <tr style="height:10px;font-size:smaller;  background-color:lightblue; height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (item.AlimDurumId == 3)
+        {//barkodsuz gönderildi
+            <tr style="height:10px;font-size:smaller;  background-color:lightpink; height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (item.AlimDurumId == 4)
+        {//Eczane stoğunda
+            <tr style="height:10px;font-size:smaller;  background-color:lightseagreen; height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-primary btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {//yanlış ilaç gönderimi
+            <tr style="height:10px;font-size:smaller;  background-color:red; height:15px; text-size-adjust:auto">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimTarihi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IlacAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EczaneGln)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Miktar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlimDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITStransferDurumAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetFiyat)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TeklifDetaylar.FirstOrDefault().YayinlamaTurAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi)
+                </td>
+
+                @*<td>
+                                @if (item. != null)
+                            {
+                                <label class="badge badge-danger">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    Pasif
+                                </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Aktif
+                            </label>
+                    }
+                            </td>*@
+                <td>
+                    @{
+                        var target = $"#islem{@item.Id}";
+
+                    }
+                    <button class="btn btn-sm btn-secondary d-sm-block d-md-none" type="button" data-toggle="collapse" data-target="@target" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <div class="collapse d-md-block" id="@target.Remove(0, 1)">
+
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-success btn-sm fa fa-edit fa-lg", @title = "Düzenle" })
+
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+@section Scripts{
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 1000);
+
+    </script>
+}

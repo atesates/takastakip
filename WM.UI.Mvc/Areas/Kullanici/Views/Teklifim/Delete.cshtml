@@ -1,0 +1,76 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Teklif
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h4>Teklifi Sil</h4>
+@if (TempData["Message"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-danger">
+        <i class="fa fa-info-circle fa-3x"></i>
+        <br />
+        @TempData["Message"]
+    </div>
+}
+<h3>Silmek istediğinize emin misiniz?</h3>
+<div>
+    <h4>@ViewBag.IlacAdi</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlimMiktari):       @Html.DisplayFor(model => model.AlimMiktari)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.BaslangicTarihi):   @Html.DisplayFor(model => model.BaslangicTarihi)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.DepoFiyat):         @Html.DisplayFor(model => model.DepoFiyat)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.EtiketFiyati):      @Html.DisplayFor(model => model.EtiketFiyati)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.HedeflenenAlim):    @Html.DisplayFor(model => model.HedeflenenAlim)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.IlacMiad):          @Html.DisplayFor(model => model.IlacMiad)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.KayitTarihi):       @Html.DisplayFor(model => model.KayitTarihi)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.MalFazlasi):        @Html.DisplayFor(model => model.MalFazlasi)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.NetFiyat):          @Html.DisplayFor(model => model.NetFiyat)
+        </dt>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn  btn-sm btn-danger" /> 
+            @Html.ActionLink("Geri Dön", "Index",null, new { @class = "btn btn-sm btn-warning" })
+        </div>
+    }
+</div>
+
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+
+    <script>
+
+        setTimeout(function () { $('.alert').fadeOut(500); }, 3000);
+
+    </script>
+}

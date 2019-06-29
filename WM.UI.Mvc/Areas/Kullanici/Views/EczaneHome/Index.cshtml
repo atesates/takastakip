@@ -1,0 +1,245 @@
+﻿@model EczaneRaporViewModel
+@{
+    ViewBag.Title = "Ana Sayfa |  Takas Takip";
+}
+
+<div class="row">
+    <div class="col-2">
+        <h5>
+            Eczane Ana Sayfa
+        </h5>
+    </div>
+    <div class="col-2" style="text-align:right">
+        @Html.LabelFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi, htmlAttributes: new { @class = "control-label col-md-6" })
+
+    </div>
+    <div class="col-3" style="text-align:left">
+        @Html.DropDownList("EczaneGrupId", null, htmlAttributes: new { onchange = "redirect(this.value)", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EczaneGrupDetaylar.FirstOrDefault().Id, "", new { @class = "text-danger" })
+
+    </div>
+    <div class="col-3">
+
+    </div>
+    <div class="col-2">
+        @*<button class="btn btn-outline-dark btn-sm" type="button" id="btnExceleAktar" onclick="tableToExcel('testTable', 'Nöbet Yaz')">
+                <i class="fa fa-file-excel-o text-success"></i> Excele Aktar
+                <i class="fa fa-download"></i>
+            </button>*@
+    </div>
+</div>
+<div class="row" style="display:none">
+    <div class="col-4">
+
+        <div id="chartContainer" style="height: 300px; width: 300px; ">
+
+        </div>
+    </div>
+    <div class="col-8">
+        <div id="chartContainer3" style="height: 250px; width: 80%; ">
+
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-4">
+
+        <div id="gelirGider">
+            @* Pivot tablo *@
+        </div>
+    </div>
+   
+</div>
+<div class="row mt-5">
+    <div class="col-8">
+        <div id="output"></div>
+    </div>
+</div>
+@section styles{
+
+    @Styles.Render("~/bundle/pivot/style", "~/bundle/alert_toastr/style")
+    @Styles.Render("~/bundle/bootstrap-select/style")
+    @Styles.Render("~/bundle/bootstrap-datepicker/style")
+
+
+}
+
+@section scripts{
+    @Scripts.Render("~/bundle/ajax")
+    @Scripts.Render("~/bundle/bootstrap-select/scripts")
+    @Scripts.Render("~/bundle/bootstrap-datepicker/scripts")
+
+    @Scripts.Render("~/bundle/queryui/scripts", "~/bundle/pivot/scripts", "~/bundle/alert_toastr/scripts")
+
+
+    <!-- #region export to excel -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            getPivotAyrintili2($('#EczaneGrupId').val())
+
+            var chart = new CanvasJS.Chart("chartContainer",
+                {
+                    title: {
+                        //text: "Presidential Election Results"
+                        fontSize: 14
+                    },
+                    animationEnabled: true,
+                    data: [
+                        {
+                            type: "pie",
+                            startAngle: 60,
+                            fontsize: 16,
+                            toolTipContent: "{legendText}: {y} - <strong>#percent% </strong>",
+                            showInLegend: true,
+                            dataPoints: [
+                                { y: 25, indexLabel: "aa" + " #percent%", legendText: "cc", indexLabelFontSize: 14 },
+                                { y: 15, indexLabel: "bb" + " #percent%", legendText: "dd", indexLabelFontSize: 14 }
+                            ]
+                        }
+                    ]
+                });
+            chart.render();
+
+            var chart3 = new CanvasJS.Chart("chartContainer3", {
+                animationEnabled: true,
+                title: {
+                    text: "Company Revenue by Year"
+                },
+                axisY: {
+                    title: "Revenue in USD",
+                    valueFormatString: "#0,,.",
+                    suffix: "mn",
+                    prefix: "$"
+                },
+                data: [{
+                    type: "splineArea",
+                    color: "rgba(54,158,173,.7)",
+                    markerSize: 5,
+                    xValueFormatString: "YYYY",
+                    yValueFormatString: "$#,##0.##",
+                    dataPoints: [
+                        { x: new Date(2000, 0), y: 3289000 },
+                        { x: new Date(2001, 0), y: 3830000 },
+                        { x: new Date(2002, 0), y: 2009000 },
+                        { x: new Date(2003, 0), y: 2840000 },
+                        { x: new Date(2004, 0), y: 2396000 },
+                        { x: new Date(2005, 0), y: 1613000 },
+                        { x: new Date(2006, 0), y: 2821000 },
+                        { x: new Date(2007, 0), y: 2000000 },
+                        { x: new Date(2008, 0), y: 1397000 },
+                        { x: new Date(2009, 0), y: 2506000 },
+                        { x: new Date(2010, 0), y: 2798000 },
+                        { x: new Date(2011, 0), y: 3386000 },
+                        { x: new Date(2012, 0), y: 6704000 },
+                        { x: new Date(2013, 0), y: 6026000 },
+                        { x: new Date(2014, 0), y: 2394000 },
+                        { x: new Date(2015, 0), y: 1872000 },
+                        { x: new Date(2016, 0), y: 2140000 }
+                    ]
+                }]
+            });
+            chart3.render();
+
+        
+
+        });
+        var myArray = new Array();
+        function getPivotAyrintili2(dropDownValue) {
+            //alert('dropDownValue: ' + dropDownValue)
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "../../../Kullanici/EczaneHome/getAyrintiliRapor2",
+                data: {
+                    Id: dropDownValue
+                },
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    sonuclar = JSON.parse(JSON.stringify(data));
+                    //alert('sonuclar: ' + sonuclar)
+                    $.each(sonuclar, function (index, n) {
+                        myArray.push({
+                            Eczanem: n.Eczane1Adi,
+                            ["Diğer Eczaneler"]: n.Eczane2Adi,
+                            ["İlaç Adı"]: n.IlacAdi,
+                            Miktar: n.Miktari,
+                            ["Net Fiyat"]: n.NetFiyat.toFixed(4),
+                            Tip: n.Tip,
+                            Tutar: (n.NetFiyat * n.Miktari).toFixed(4)
+                        });
+                    });
+                    myArray = JSON.parse(JSON.stringify(myArray));
+                    pivotTableAlimTeklif()
+                    pivotTableGrafikli()
+                },
+                error: function (request, textStatus, thrownError) {
+                    alert(request.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        function pivotTableAlimTeklif() {
+            if (myArray != null && myArray.length > 0) {
+                gelirGiderDagilim = $(function table4() {
+                    $("#gelirGider").pivotUI(myArray,
+                        {
+                            cols: ["Tip", "Diğer Eczaneler"],
+                            rows: ["Eczanem"],
+                            vals: ["Tutar"],
+                            aggregatorName: "Sum",
+                            rendererName: "Heatmap"
+                        }
+                    );
+                });
+            }
+        }
+        function pivotTableGrafikli() {
+            if (myArray != null && myArray.length > 0) {
+                $("#output").pivotUI(
+                    myArray, {
+                        cols: ["İlaç Adı", "Diğer Eczaneler"],
+                        rows: ["Tip"],
+                        vals: ["Tutar"],
+                        aggregatorName: "Sum",
+                        rendererName: "Bar Chart",
+                        renderers: $.extend(
+                            $.pivotUtilities.renderers,
+                            $.pivotUtilities.c3_renderers
+                        )
+                    });
+            }
+        }
+
+        var tableToExcel = (function () {
+
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name) {
+                //$('#testTable thead tr:first').find('th:last').remove();
+                //$('#testTable tr').find('td:last').remove();
+                //$('#testTable').find('tr:last').remove();
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
+
+        $root = $('<xml/>');
+
+        //create a workbook
+        $workbook = $('<ss:Workbook/>').attr({
+            "xmlns:ss": "urn:schemas-microsoft-com:office:spreadsheet",
+            "xmlns:x": "urn:schemas-microsoft-com:office:excel",
+            "xmlns:o": "urn:schemas-microsoft-com:office:office"
+        });
+
+        $root.append($workbook);
+
+                                                                    //xlsObject = 'data:application/vnd.ms-excel;base64,' + base64.encode(testXML);
+    </script>
+}

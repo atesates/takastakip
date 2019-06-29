@@ -1,0 +1,146 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Eczane
+@{
+    ViewBag.Title = "Bilgi Düzenle |  Takas Takip";
+}
+<h4>Eczane Düzenle</h4>
+<hr />
+@if (TempData["Message"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-danger">
+        <i class="fa fa-info-circle fa-2x"></i>
+        <br />
+        @TempData["Message"]
+    </div>
+}
+@if (TempData["MessageSuccess"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-success">
+        <i class="fa fa-info-circle fa-2x"></i>
+
+        @TempData["MessageSuccess"]
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="row">
+
+            <div class="col-md-offset-2 col-md-4">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Adi, "Eczane Adı", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Adi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.Adi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EczaneGln, "Gln Numarası", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EczaneGln, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.EczaneGln, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SehirId, htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SehirId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                        @Html.ValidationMessageFor(model => model.SehirId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, "E-Posta", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Adres, htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Adres, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.Adres, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Telefon, htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Telefon, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.Telefon, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Telefon2, htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Telefon2, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.Telefon2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-md-4">
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VergiDairesi, "Vergi Dairesi", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.VergiDairesi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.VergiDairesi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VergiNumarasi, "Vergi Numarası", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.VergiNumarasi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.VergiNumarasi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FaturaAdSoyad, "Fatura Adı Soyadı", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FaturaAdSoyad, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.FaturaAdSoyad, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-offset-2 col-md-4">
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Düzenle" class="btn btn-primary" />
+                        @*@Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-warning" })*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 1000);
+                            //$(".datepicker").datepicker({
+                            //    dateFormat: "dd.mm.yy",
+                            //    changeYear: true,
+                            //    monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                            //    dayNamesMin: ["Pa", "Pt", "Sl", "Ça", "Pe", "Cu", "Ct"],
+                            //    firstDay: 1
+                            //});
+    </script>
+}

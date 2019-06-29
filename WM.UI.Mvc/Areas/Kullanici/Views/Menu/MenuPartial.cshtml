@@ -1,0 +1,62 @@
+﻿@model WM.UI.Mvc.Areas.Kullanici.Models.MenuPartialViewModel
+
+<div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav mr-auto">
+        @foreach (var menu in Model.Menuler)
+        {
+            //yetkili olduğu alt menü sayısı
+            var menuAltSayisi = Model.MenuAltlar.Where(s => s.MenuId == menu.Id).Count();
+            //tüm alt menülerin sayısı
+            var menuAltTumuSayisi = Model.MenuAltlarTumu.Where(s => s.MenuId == menu.Id).Count();
+
+            if (menuAltSayisi == 0)
+            {
+                if (menuAltTumuSayisi > 0)
+                {//alt menü olup bunlara hiç yetki verilmediyse;
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Alt menüleri görmek için yetki alın.">
+                            <i class="@menu.SpanCssClass" aria-hidden="true"></i> @menu.LinkText
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action( menu.ActionName, menu.ControllerName, new { area = menu.AreaName })">
+                            <i class="@menu.SpanCssClass" aria-hidden="true"></i>
+                            <span class="d-inline d-md-none d-xl-inline">@menu.LinkText</span>
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="@menu.SpanCssClass" aria-hidden="true"></i> <span class="d-inline d-md-none d-xl-inline">@menu.LinkText</span></a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @foreach (var menuAlt in Model.MenuAltlar.Where(s => s.MenuId == menu.Id))
+                        {
+                            @Html.ActionLink(menuAlt.LinkText, menuAlt.ActionName, menuAlt.ControllerName, new { area = menuAlt.AreaName }, new { @class = menuAlt.SpanCssClass })
+                        }
+                    </div>
+                </li>
+            }
+        }
+
+    </ul>
+    <ul class="navbar-nav float-md-right">
+        <li class="nav-item"> <a class="nav-link" href="@Url.RouteUrl("Default", new { controller = "Home", action = "Contact" })"><span class="fa fa-envelope fa-lg"></span> İletişim</a> </li>
+        @*   @Html.Partial("_LoginPartial")*@
+
+    </ul>
+    <ul class="navbar-nav float-md-right">
+        @Html.Partial("_LoginPartial")
+    </ul>
+
+    @* Site içi arama *@
+    @*<form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" placeholder="Ara" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> <span class="fa fa-search"></span> </button>
+        </form>*@
+</div>
+

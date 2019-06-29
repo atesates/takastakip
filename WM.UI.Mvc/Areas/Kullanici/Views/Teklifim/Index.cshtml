@@ -1,0 +1,861 @@
+﻿@model TeklifDetayViewModel
+@{
+    ViewBag.Title = "Tekliflerim |  Takas Takip";
+}
+<!-- #region ajaxOptions -->
+@{
+
+    var postAjaxSilCoklu = new AjaxOptions
+    {
+        AllowCache = false,
+        Url = Url.Action("SecilenleriSil", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //,LoadingElementId = "islem"
+    };
+
+    var postAjaxPasifYap = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriPasifYap", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxAktifYap = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriAktifYap", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxKapat = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriKapat", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var getAjaxTekliflerim = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("GetTekliflerim", "Teklifim"),
+        HttpMethod = "GET",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxITS = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SetITS", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxALD = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SetALD", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.ReplaceWith
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxSil = new AjaxOptions
+    {
+        AllowCache = false,
+        Url = Url.Action("SecileniSil", "Teklifim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //,LoadingElementId = "islem"
+    };
+}
+
+@using (Ajax.BeginForm(null, null, postAjaxSil, new { id = "formSil" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="display:none">
+        @Html.Label("pageForSil")
+    </div>
+    @Html.Hidden("Id")
+}
+@{
+    SelectList teklifTurler = ViewBag.TeklifTurId;
+    SelectList teklifDurumlar = ViewBag.TeklifDurumId;
+    SelectList ITStransferDurumlar = ViewBag.ITStransferDurumId;
+    SelectList yayinlamaTurler = ViewBag.YayinlamaTurId;
+    SelectList ilaclar = ViewBag.IlacId;
+    var rolId = ViewBag.rolId;
+}
+<!-- #region CokluSil modal -->
+<div class="modal" tabindex="-1" id="myCokluSilModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Sil
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Alimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitCokluSil" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Sil</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Hayır</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region Sil modal -->
+<div class="modal" tabindex="-1" id="mySilModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Sil
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Alimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitSil" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Sil</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Hayır</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region ITS modal -->
+<div class="modal" tabindex="-1" id="myITSModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    ITS Transfer Durum Değiştir
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*@using (Ajax.BeginForm(null, null, postAjaxITS, new { id = "formITS" }))
+        {*@
+                @Html.AntiForgeryToken()
+                <div style="display:none">
+                    @Html.TextArea("ExpandedForITS")
+                </div>
+                @Html.Hidden("AlimIDForITS")
+                @Html.Hidden("alimDurumIdForITS")
+                @Html.Hidden("teklifDurumIdForITS")
+                <div id="ddlITStransferDurumu" class="form-group mr-3">
+                    @Html.DropDownList("ITSTransferDurumId", null, htmlAttributes: new
+               {
+                   @class = "form-control",
+                   @id = "ITSTransferDurumId"
+
+               }, optionLabel: "---ITS Transfer  Durumu Seç---")
+                </div>
+                @*}*@
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Alimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitITS" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Kaydet</a>
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Vazgeç</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region ALD modal -->
+<div class="modal" tabindex="-1" id="myALDModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Alım Durum Değiştir
+                </h5>
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                @*@using (Ajax.BeginForm(null, null, postAjaxALD, new { id = "formALD" }))
+        {*@
+                @Html.AntiForgeryToken()
+
+                @Html.Hidden("AlimIDForALD")
+                <div style="display:none">
+                    @Html.TextArea("ExpandedForALD")
+                </div>
+                @Html.Hidden("alimDurumIdForALD")
+                @Html.Hidden("teklifDurumIdForALD")
+
+
+                <div id="ddlAlimDurumu" class="form-group mr-3">
+
+                    @Html.DropDownList("AlimDurumId", null, htmlAttributes: new
+               {
+                   @class = "form-control",
+                   @id = "AlimDurumId"
+                   //,
+                   //onchange = "myFunction(event)"
+
+               }, optionLabel: "---Alım Durumu Seç---"
+                  )
+                </div>
+
+                @*}*@
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Alimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitALD" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Kaydet</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Vazgeç</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region TKD modal -->
+<div class="modal" tabindex="-1" id="myTKDModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Teklif Durum Değiştir
+                </h5>
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                @*@using (Ajax.BeginForm(null, null, postAjaxALD, new { id = "formALD" }))
+        {*@
+                @Html.AntiForgeryToken()
+
+                @Html.Hidden("TeklifIDForTLD")
+                <div style="display:none">
+                    @Html.TextArea("ExpandedForTKD")
+                </div>
+                @Html.Hidden("alimDurumIdForTLD")
+                @Html.Hidden("teklifDurumIdForTLD")
+
+
+                <div id="ddlTeklifDurumu" class="form-group mr-3">
+
+                    @Html.DropDownList("TeklifDurumId", null, htmlAttributes: new
+               {
+                   @class = "form-control",
+                   @id = "TeklifDurumId"
+                   //,
+                   //onchange = "myFunction(event)"
+
+               }, optionLabel: "---Teklif Durumu Seç---"
+                  )
+                </div>
+
+                @*}*@
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Alimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitTKD" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Kaydet</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Vazgeç</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------buttons-------------------------------------*@
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-12 col-md-2">
+                <h5>
+                    Tekliflerim
+                </h5>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Teklifim", new { area= "Kullanici" })"><span class="fa fa-plus"></span> Yeni Teklif Oluştur</a>
+                <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Çoklu İşlemler
+                </a>
+            </div>
+            <div class="col-3">
+                <div class="collapse" id="collapseExample">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="mr-3">
+
+                                @using (Ajax.BeginForm(null, null, postAjaxSilCoklu, new { id = "formSilCoklu" }))
+                                {
+                                <div style="display:none">
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("pageForCokluSil")
+                                    @Html.Hidden("teklifDurumIdForCokluSil")
+                                    @Html.Hidden("alimDurumIdForCokluSil")
+                                    @Html.TextArea("ExpandedForSil")
+                                    @Html.Hidden("silinecekTeklifler")
+                                </div>
+                                    <input type="submit" id="CokluSil" class="btn btn-sm btn-danger"
+                                           data-toggle="modal" data-target="#myCokluSilModal" value="Seçilenleri Sil" />
+
+                                    @*<button type="button" class="btn btn-sm btn-outline-danger fa fa-trash fa-lg"
+                data-toggle="modal" data-target="#myModal"></button>*@
+                                }
+                            </div>
+                            <div class="mr-9">
+
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-sm  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Teklif Durumları
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">
+                                            @using (Ajax.BeginForm(null, null, postAjaxKapat, new { id = "formKapat" }))
+                                            {
+
+                                                <input type="submit" id="kapat" class="btn btn-sm btn-outline-secondary"
+                                                       value="Seçilenleri Kapat" />
+                                                <div style="display:none">
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("kapatilacakTeklifler")
+                                                    @Html.Hidden("pageForKapat")
+                                                    @Html.Hidden("teklifDurumIdForKapat")
+                                                    @Html.Hidden("alimDurumIdForKapat")
+                                                    @Html.TextArea("ExpandedForKapat")
+                                                </div>
+                                            }
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            @using (Ajax.BeginForm(null, null, postAjaxAktifYap, new { id = "formAktif" }))
+                                            {
+
+                                                <input type="submit" id="aktif" class="btn btn-sm btn-outline-success"
+                                                       value="Seçilenleri Aktif Yap" />
+                                                <div style="display:none">
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("pageForAktif")
+                                                    @Html.Hidden("teklifDurumIdForAktif")
+                                                    @Html.Hidden("alimDurumIdForAktif")
+                                                    @Html.Hidden("aktifYapilacakTeklifler")
+                                                    @Html.TextArea("ExpandedForAktif")
+                                                </div>
+                                            }
+
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            @using (Ajax.BeginForm(null, null, postAjaxPasifYap, new { id = "formPasif" }))
+                                            {
+
+                                                <input type="submit" id="pasif" class="btn btn-sm btn-outline-danger"
+                                                       value="Seçilenleri Pasif Yap" />
+                                                <div style="display:none">
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("pageForPasif")
+                                                    @Html.Hidden("teklifDurumIdForPasif")
+                                                    @Html.Hidden("alimDurumIdForPasif")
+                                                    @Html.Hidden("pasifYapilacakTeklifler")
+                                                    @Html.TextArea("ExpandedForPasif")
+                                                </div>
+
+
+                                            }
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Ajax.BeginForm(null, null, getAjaxTekliflerim, new { id = "formTekliflerim" }))
+                            {
+                                @Html.Hidden("page")
+                                @*@Html.Hidden("teklifDurumId")*@
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="collapse" id="collapseExample2">
+                    <div class="aciklamalarim">
+                        @*Satırlarda ve alt satırlarda mavi yazılan alanlara çift tıklayarak o alanın değerini değiştirebilirsiniz.*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="alimdetaylar" class="row sayfaPartialBolum">
+            @*-----------------TeklifDetayAlimDetaylarPartialView-------------------------*@
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/ajax")
+    @Scripts.Render("~/bundle/queryui/scripts")
+
+    <script>
+        //model string halde çekilir
+        //alert('submitTeklifler')
+        $('#formTekliflerim').submit();
+        
+        $("#CokluSil").click(function (e) {
+           
+        });
+        $("#aktif").click(function (e) {
+            //alert($('#teklifDurumId').val())
+            $('#alimDurumIdForAktif').val($('#alimDurumId').val());
+            $('#teklifDurumIdForAktif').val($('#teklifDurumId').val());
+            //alert($('#teklifDurumIdForAktif').val())
+            $('#pageForAktif').val($('#page').val())
+            checkEdilenCeheckBoxlariAktifHiddenFieldeAktar()
+        });
+        $("#pasif").click(function (e) {
+            $('#teklifDurumIdForPasif').val($('#teklifDurumId').val());
+            $('#alimDurumIdForPasif').val($('#alimDurumId').val());
+            $('#pageForPasif').val($('#page').val())
+            checkEdilenCeheckBoxlariPasifHiddenFieldeAktar()
+        });
+        $("#kapat").click(function (e) {
+            $('#pageForKapat').val($('#page').val())
+            $('#teklifDurumIdForKapat').val($('#teklifDurumId').val());
+            $('#alimDurumIdForKapat').val($('#alimDurumId').val());
+            if (!checkEdilenCeheckBoxlariKapatHiddenFieldeAktar())
+                e.preventDefault;
+        });
+        function checkEdilenCeheckBoxlariSilHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#silinecekTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForSil").val($("#expandedList").val());
+            //alert('ExpandedForAktif :' + $("#ExpandedForAktif").val());
+        }
+        function checkEdilenCeheckBoxlariPasifHiddenFieldeAktar() {
+            //alert('pasif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // alert('toplamString :' + toplamString);
+
+            $("#pasifYapilacakTeklifler").val(toplamString);
+            // alert('pasifYapilacakTeklifler :' + $("#pasifYapilacakTeklifler").val());
+
+            $("#ExpandedForPasif").val($("#expandedList").val());
+            //alert('ExpandedForPasif :' + $("#ExpandedForPasif").val());
+        }
+        function checkEdilenCeheckBoxlariAktifHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#aktifYapilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForAktif").val($("#expandedList").val());
+            //alert('ExpandedForAktif :' + $("#ExpandedForAktif").val());
+        }
+        function checkEdilenCeheckBoxlariKapatHiddenFieldeAktar(e) {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForKapat").val($("#expandedList").val());
+            //alert('ExpandedForAktif :' + $("#ExpandedForAktif").val());
+            if (!$("#expandedList").val())
+                return false;
+        }
+        //-------------cokluSil---------------------
+        $('#CokluSil').on('click', function (e) {
+            
+            // alert('danger')
+            e.preventDefault();
+        });
+        $('#ConfirmSubmitCokluSil').click(function () {
+            $('#pageForCokluSil').val($('#page').val())
+            checkEdilenCeheckBoxlariSilHiddenFieldeAktar()
+            $('#alimDurumIdForCokluSil').val($('#alimDurumId').val());
+            $('#teklifDurumIdForCokluSil').val($('#teklifDurumId').val());
+            $('#formSilCoklu').submit();
+            //location.reload();
+        });
+        //------------------tekli sil-----------------------
+        $('#ConfirmSubmitSil').click(function () {
+            //alert($("#Id").val());
+            $('#alimDurumIdForSil').val($('#alimDurumId').val());
+            $('#teklifDurumIdForSil').val($('#teklifDurumId').val());
+            $('#formSil').submit();
+            //location.reload();//partial dan çağrılan metodun update i gözüksün diye yapılıyor,
+            //controller da modeli update den sonra doldururunca sorun kalmadı
+        });
+        //------------------ITS-----------------------
+        $('#ConfirmSubmitITS').click(function () {
+            $('#alimDurumIdForITS').val($('#alimDurumId').val());
+            $('#teklifDurumIdForITS').val($('#teklifDurumId').val());
+            postITSDurum()
+        });
+        function checkEdilenCeheckBoxlariITSHiddenFieldeAktar() {
+            // alert('ITS.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            //alert($("#expandedList").val());
+
+            $("#ExpandedForITS").val($("#expandedList").val());
+            //alert('ExpandedForITS :' + $("#ExpandedForITS").val());
+        }
+        //------------------ALD-----------------------
+        $('#ConfirmSubmitALD').click(function () {
+            $('#alimDurumIdForALD').val($('#alimDurumId').val());
+            $('#teklifDurumIdForALD').val($('#teklifDurumId').val());
+            postAlimDurum()
+        });
+        //------------------TKD-----------------------
+        $('#ConfirmSubmitTKD').click(function () {
+            $('#alimDurumIdForTKD').val($('#alimDurumId').val());
+            $('#teklifDurumIdForTKD').val($('#teklifDurumId').val());
+            postTeklifDurum()
+        });
+        function checkEdilenCeheckBoxlariALDHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            // alert($("#expandedList").val());
+            $("#ExpandedForALD").val($("#expandedList").val());
+            //alert('ExpandedForALD :' + $("#ExpandedForALD").val());
+        }
+        function checkEdilenCeheckBoxlariTKDHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            // alert($("#expandedList").val());
+            $("#ExpandedForTKD").val($("#expandedList").val());
+            //alert('ExpandedForALD :' + $("#ExpandedForALD").val());
+        }
+        function postAlimDurum() {
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            //alert(token)
+            checkEdilenCeheckBoxlariALDHiddenFieldeAktar();
+            var AlimIDForALD = $('#AlimIDForALD').val();
+            var AlimDurumId = $('#AlimDurumId').val();
+            var Page = $('#page').val();
+            var expandedForALD = $('#ExpandedForALD').val();
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            
+            //alert('AlimIDForALD: ' + AlimIDForALD)
+            //alert('AlimDurumId: ' + AlimDurumId)
+            // alert('ExpandedForALD: ' + expandedForALD)
+            // alert('Page: ' + Page)
+            $.ajax({
+                type: "POST",
+                url: "../../../Kullanici/Teklifim/SetALD",
+                data: {
+                    __RequestVerificationToken: token,
+                    AlimIDForALD: AlimIDForALD,
+                    AlimDurumId: AlimDurumId,
+                    ExpandedForALD: expandedForALD,
+                    teklifDurumIdForALD: teklifDurumId,
+                    alimDurumIdForALD: alimDurumId,
+                    page: Page,
+                },
+                //data: "{'AlimIDForALD':" + AlimIDForALD + ",'AlimDurumId':" + AlimDurumId +
+                //    ",'ExpandedForALD': " + ExpandedForALD + ",'__RequestVerificationToken':" + token + "  }",
+                //__RequestVerificationToken: token,
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    //location.reload();
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    alert(request.status);
+                    alert(thrownError);
+                    //location.reload();
+                }
+            });
+            // $('#formALD').submit();
+            //location.reload();
+        }
+        function postITSDurum() {
+            // alert('Page: ' + $('#page').val())
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            //alert(token)
+            checkEdilenCeheckBoxlariITSHiddenFieldeAktar();
+            var AlimIDForITS = $('#AlimIDForITS').val();
+            var ITSTransferDurumId = $('#ITSTransferDurumId').val();
+            var ExpandedForITS = $('#expandedList').val();
+            var Page = $('#page').val();
+
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+
+            //alert('AlimIDForALD: ' + AlimIDForALD)
+            //alert('AlimDurumId: ' + AlimDurumId)
+            $.ajax({
+                type: "POST",
+                url: "../../../Kullanici/Teklifim/SetITS",
+                data: {
+                    __RequestVerificationToken: token,
+                    AlimIDForITS: AlimIDForITS,
+                    ITSTransferDurumId: ITSTransferDurumId,
+                    page: Page,
+                    ExpandedForITS: ExpandedForITS,
+                    teklifDurumIdForITS: teklifDurumId,
+                    alimDurumIdForITS: alimDurumId,
+                },
+                //data: "{'AlimIDForALD':" + AlimIDForALD + ",'AlimDurumId':" + AlimDurumId +
+                //    ",'ExpandedForALD': " + ExpandedForALD + ",'__RequestVerificationToken':" + token + "  }",
+                //__RequestVerificationToken: token,
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    //location.reload();
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    alert(request.status);
+                    alert(thrownError);
+                    //location.reload();
+                }
+            });
+            // $('#formALD').submit();
+            //location.reload();
+        }
+        function postTeklifDurum() {
+            //alert('postTeklifDurum')
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            //alert(token)
+            checkEdilenCeheckBoxlariTKDHiddenFieldeAktar();
+            var TeklifId = $('#TeklifIDForTLD').val();
+            var TeklifDurumId = $('#TeklifDurumId').val();
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            var Page = $('#page').val();
+            var ExpandedForTeklifDurum = $('#ExpandedForTKD').val();
+            //alert('TeklifDurumId: ' + TeklifDurumId)
+            //alert('teklifDurumId: ' + teklifDurumId)
+            // alert('ExpandedForALD: ' + expandedForALD)
+            // alert('Page: ' + Page)
+            $.ajax({
+                type: "POST",
+                url: "../../../Kullanici/Teklifim/SetTeklifDurum",
+                data: {
+                    __RequestVerificationToken: token,
+                    TeklifId: TeklifId,
+                    TeklifDurumId: TeklifDurumId,
+                    ExpandedForTeklifDurum: ExpandedForTeklifDurum,
+                    page: Page,
+                    teklifDurumIdForTKD: teklifDurumId,
+                    alimDurumIdForTKD: alimDurumId,
+
+                },
+                //data: "{'AlimIDForALD':" + AlimIDForALD + ",'AlimDurumId':" + AlimDurumId +
+                //    ",'ExpandedForALD': " + ExpandedForALD + ",'__RequestVerificationToken':" + token + "  }",
+                //__RequestVerificationToken: token,
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    //location.reload();
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                   // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+            // $('#formALD').submit();
+            //location.reload();
+        }
+        function filterTeklifDurum() {                    
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            var Page = $('#page').val();
+            $.ajax({
+                type: "GET",
+                url: "../../../Kullanici/Teklifim/GetTekliflerim",
+                data: {                   
+                    teklifDurumId: teklifDurumId,
+                    alimDurumId: alimDurumId,
+                    page: Page,
+                },
+                dataType: "html",
+                success: function (data) {
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                    // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+        }
+        function filterAlimDurum() {
+            
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            //alert(alimDurumId)
+            var Page = $('#page').val();
+            $.ajax({
+                type: "GET",
+                url: "../../../Kullanici/Teklifim/GetTekliflerim",
+                data: {
+                    teklifDurumId: teklifDurumId,
+                    alimDurumId: alimDurumId,
+                    page: Page,
+                },
+                dataType: "html",
+                success: function (data) {
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                    // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+        }
+    </script>
+}

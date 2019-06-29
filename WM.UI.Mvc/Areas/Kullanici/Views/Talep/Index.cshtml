@@ -1,0 +1,97 @@
+﻿@model TalepDetayViewModel
+@{
+    ViewBag.Title = "Talep | Takas Takip";
+}
+
+<!-- #region ajaxOptions -->
+@{
+
+    var getAjaxTalepler = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("GetTalepler", "Talep"),
+        HttpMethod = "GET",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+}
+@using (Ajax.BeginForm(null, null, getAjaxTalepler, new { id = "formTalepler" }))
+{
+    @Html.Hidden("page")
+}
+
+
+@{
+  
+    SelectList talepDurumlar = ViewBag.TalepDurumId;
+    SelectList ilaclar = ViewBag.IlacId;
+    var rolId = ViewBag.rolId;
+}
+
+@*---------------------------------buttons-------------------------------------*@
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-1">
+                <h5>
+                    Talepler
+                </h5>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-sm btn-outline-success ml-5" href="@Url.Action("Create", "Talebim", new { area= "Kullanici" })"><span class="fa fa-plus"></span> Yeni Talep Oluştur</a>
+            
+            </div>
+            <div class="col-4">
+             
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="alimdetaylar" class="row sayfaPartialBolum">
+            @*-----------------TalepDetayatilimDetaylarPartialView-------------------------*@
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/ajax")
+    @Scripts.Render("~/bundle/queryui/scripts")
+
+    <script>
+
+        $('#formTalepler').submit();
+        function filterTalepDurum() {
+            var talepDurumId = $('#talepDurumId').val();
+            // alert(talepDurumId)
+            var Page = $('#page').val();
+            $.ajax({
+                type: "GET",
+                url: "../../../Kullanici/Talep/GetTalepler",
+                data: {
+                    talepDurumId: talepDurumId,
+                    page: Page,
+                },
+                dataType: "html",
+                success: function (data) {
+                    $("#alimdetaylar").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                    // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+        }
+    </script>
+}

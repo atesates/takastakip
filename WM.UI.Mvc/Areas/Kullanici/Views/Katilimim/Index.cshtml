@@ -1,0 +1,512 @@
+﻿@model KatilimDetayViewModel
+
+@{
+    ViewBag.Title = "Katılımlarım |  Takas Takip";
+}
+<!-- #region ajaxOptions -->
+@{
+
+    var postAjaxSilCoklu = new AjaxOptions
+    {
+        AllowCache = false,
+        Url = Url.Action("SecilenleriSil", "Katilimim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //,LoadingElementId = "islem"
+    };
+
+    var postAjaxBekleniyorYap = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriBekleniyorYap", "Katilimim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxStokaAl = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriStokaAl", "Katilimim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxYanlisGonderim = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("SecilenleriYanlisGonderimYap", "Katilimim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var getAjaxKatilimlarim = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("GetKatilimlarim", "Katilimim"),
+        HttpMethod = "GET",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+    var postAjaxSil = new AjaxOptions
+    {
+        AllowCache = false,
+        Url = Url.Action("SecileniSil", "Katilimim"),
+        HttpMethod = "POST",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //,LoadingElementId = "islem"
+    };
+
+}
+@using (Ajax.BeginForm(null, null, postAjaxSil, new { id = "formSil" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="display:none">
+        @Html.Label("pageForSil")
+    </div>
+
+    @Html.Hidden("Id")
+}
+
+
+<!-- #region CokluSil modal -->
+<div class="modal" tabindex="-1" id="myCokluSilModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Sil
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Katilimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitCokluSil" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Sil</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Hayır</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region Sil modal -->
+<div class="modal" tabindex="-1" id="mySilModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Sil
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                @*@Html.ActionLink("Sil", "Delete", "Katilimim", new { area = "Kullanici" }, new { @class = "btn btn-outline-danger", id = "ConfirmSubmitSil" })*@
+                <a href="#" id="ConfirmSubmitSil" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Sil</a>
+
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Hayır</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #region TalepVerenEczaneGrupIdForDaGiTiCi modal -->
+<div class="modal" tabindex="-1" id="myDagiticiModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Dağıtıcı Bilgileri
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="dagticidetaylar" class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">Kapat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Ajax.BeginForm(null, null, getAjaxKatilimlarim, new { id = "formKatilimlarim" }))
+{
+    @Html.Hidden("page")
+}
+
+@Html.Hidden("TalepVerenEczaneGrupIdForDaGiTiCi")
+@*-----------------buttons----------------------------------------*@
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-2">
+                <h5>
+                    Katılımlarım
+                </h5>
+            </div>
+            <div class="col-2">
+                <p>
+                    <a class="btn btn-sm btn-outline-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Çoklu İşlemler
+                    </a>
+
+                </p>
+            </div>
+            <div class="col-4">
+                <div class="collapse" id="collapseExample">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="mr-3">
+                                @using (Ajax.BeginForm(null, null, postAjaxSilCoklu, new { id = "formSilCoklu" }))
+                                {
+                                    <div style="display:none">
+                                        @Html.AntiForgeryToken()
+                                        <div style="display:none">
+                                            @Html.Hidden("pageForCokluSil")
+                                        </div>
+                                        @Html.TextArea("ExpandedForSil")
+                                        @Html.Hidden("silinecekKatilimlar")
+                                    </div>
+                                    <input type="submit" id="CokluSil" class="btn btn-sm btn-danger"
+                                           data-toggle="modal" data-target="#myCokluSilModal" value="Seçilenleri Sil" />
+
+                                    @*<button type="button" class="btn btn-sm btn-outline-danger fa fa-trash fa-lg"
+                                        data-toggle="modal" data-target="#myModal"></button>*@
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="partialView" class="row sayfaPartialBolum">
+            @*-----------------KatilimDetaypartialViewPartialView-------------------------*@
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    @Scripts.Render("~/bundle/ajax")
+
+    <script>
+        setTimeout(function () {
+            $('.alert-success').addClass("elemaniUcur");
+        }, 2000);
+        setTimeout(function () {
+            $('.alert-danger').addClass("elemaniUcur");
+        }, 2000);
+        $('#formKatilimlarim').submit();
+
+        $("#silCoklu").click(function (e) {
+
+        });
+        $("#bekleniyor").click(function (e) {
+
+            checkEdilenCeheckBoxlariBekleniyorHiddenFieldeAktar()
+        });
+        $("#stok").click(function (e) {
+
+            checkEdilenCeheckBoxlariStokHiddenFieldeAktar()
+        });
+        $("#yanlis").click(function (e) {
+
+            checkEdilenCeheckBoxlariYanlisHiddenFieldeAktar()
+        });
+        function checkEdilenCeheckBoxlariSilHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#silinecekKatilimlar").val(toplamString);
+            //alert('silinecekKatilimlar :' + $("#silinecekKatilimlar").val());
+            $("#ExpandedForSil").val($("#expandedList").val());
+            // alert('ExpandedForSil :' + $("#ExpandedForSil").val());
+        }
+        function checkEdilenCeheckBoxlariBekleniyorHiddenFieldeAktar() {
+            //alert('Bekleniyor.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            //alert('toplamString :' + toplamString);
+
+            $("#bekleniyorYapilacakKatilimlar").val(toplamString);
+            //alert('bekleniyorYapilacakKatilimlar :' + $("#bekleniyorYapilacakKatilimlar").val());
+
+            $("#ExpandedForBekleniyor").val($("#expandedList").val());
+            //alert('ExpandedForBekleniyor :' + $("#ExpandedForBekleniyor").val());
+        }
+        function checkEdilenCeheckBoxlariStokHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#stogaAlinacakAlimlar").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForStok").val($("#expandedList").val());
+            //alert('ExpandedForStok :' + $("#ExpandedForStok").val());
+        }
+        function checkEdilenCeheckBoxlariYanlisHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            $("#yanlisGonderimYapilacakAlimlar").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForYanlis").val($("#expandedList").val());
+            //alert('ExpandedForStok :' + $("#ExpandedForStok").val());
+        }
+        function checkEdilenCeheckBoxlariAllHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            $("#ExpandedForAll").val($("#expandedList").val());
+            //alert('ExpandedForStok :' + $("#ExpandedForStok").val());
+        }
+        //-------------cokluSil---------------------
+        $('#CokluSil').on('click', function (e) {
+            // alert('danger')
+            e.preventDefault();
+        });
+        $('#ConfirmSubmitCokluSil').click(function () {
+            // alert('ConfirmSubmit')
+            $('#pageForCokluSil').val($('#page').val())
+            checkEdilenCeheckBoxlariSilHiddenFieldeAktar()
+            $('#formSilCoklu').submit();
+            location.reload();
+        });
+        //-----tekli sil-----
+        $('#ConfirmSubmitSil').click(function () {
+            //alert($("#Id").val());
+
+            $('#formSil').submit();
+            alert("silindi")
+            location.reload();
+        });
+        //------------------ITS-----------------------
+        $('#ConfirmSubmitITS').click(function () {
+            postITSDurum()
+        });
+        function checkEdilenCeheckBoxlariITSHiddenFieldeAktar() {
+            // alert('ITS.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            //alert($("#expandedList").val());
+
+            $("#ExpandedForITS").val($("#expandedList").val());
+            //alert('ExpandedForITS :' + $("#ExpandedForITS").val());
+        }
+        //------------------ALD-----------------------
+        $('#ConfirmSubmitALD').click(function () {
+            postAlimDurum()
+        });
+        function checkEdilenCeheckBoxlariALDHiddenFieldeAktar() {
+            // alert('aktif.click');
+            var selectedIDs = new Array();
+            var subGridSeletedeIDs = new Array();
+            $('input:checkbox.gridCheckBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            //$('input:checkbox.subGridCheckBox').each(function () {
+            //    if ($(this).prop('checked')) {
+            //        subGridSeletedeIDs.push($(this).val());
+            //    }
+            //});
+            var toplamString = selectedIDs + ";" + subGridSeletedeIDs
+            // $("#kapatilacakTeklifler").val(toplamString);
+            // alert('aktifYapilacakEczaneGrupTanimlar :' + $("#aktifYapilacakEczaneGrupTanimlar").val());
+            // alert($("#expandedList").val());
+            $("#ExpandedForALD").val($("#expandedList").val());
+            //alert('ExpandedForALD :' + $("#ExpandedForALD").val());
+        }
+        function postAlimDurum() {
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            //alert(token)
+            checkEdilenCeheckBoxlariALDHiddenFieldeAktar();
+            var KatilimIDForALD = $('#KatilimIDForALD').val();
+            var KatilimDurumId = $('#KatilimDurumId').val();
+            var Page = $('#page').val();
+            var ExpandedForALD = $('#ExpandedForALD').val();
+            //alert('KatilimIDForALD: ' + KatilimIDForALD)
+            //alert('KatilimDurumId: ' + KatilimDurumId)
+            //alert('Page: ' + Page)
+            $.ajax({
+                type: "POST",
+                url: "../../../Kullanici/Katilimim/SetALD",
+                data: {
+                    __RequestVerificationToken: token,
+                    KatilimIDForALD: KatilimIDForALD,
+                    KatilimDurumId: KatilimDurumId,
+                    ExpandedForALD: ExpandedForALD,
+                    pageForALD: Page
+                },
+                //data: "{'KatilimIDForALD':" + KatilimIDForALD + ",'KatilimDurumId':" + KatilimDurumId +
+                //    ",'ExpandedForALD': " + ExpandedForALD + ",'__RequestVerificationToken':" + token + "  }",
+                //__RequestVerificationToken: token,
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    //location.reload();
+                    $("#partialView").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    alert(request.status);
+                    alert(thrownError);
+                    //location.reload();
+                }
+            });
+            // $('#formALD').submit();
+            //location.reload();
+        }
+        function postITSDurum() {
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            //alert(token)
+            checkEdilenCeheckBoxlariITSHiddenFieldeAktar();
+            var KatilimIDForITS = $('#KatilimIDForITS').val();
+            var Page = $('#page').val();
+            var ITSTransferDurumId = $('#ITSTransferDurumId').val();
+            var ExpandedForITS = $('#ExpandedForITS').val();
+            //alert('KatilimIDForALD: ' + KatilimIDForALD)
+            //alert('KatilimDurumId: ' + KatilimDurumId)
+            //alert('ExpandedForALD: ' + ExpandedForALD)
+            $.ajax({
+                type: "POST",
+                url: "../../../Kullanici/Katilimim/SetITS",
+                data: {
+                    __RequestVerificationToken: token,
+                    KatilimIDForITS: KatilimIDForITS,
+                    ITSTransferDurumId: ITSTransferDurumId,
+                    ExpandedForITS: ExpandedForITS,
+                    pageForITS: Page
+
+                },
+                //data: "{'KatilimIDForALD':" + KatilimIDForALD + ",'KatilimDurumId':" + KatilimDurumId +
+                //    ",'ExpandedForALD': " + ExpandedForALD + ",'__RequestVerificationToken':" + token + "  }",
+                //__RequestVerificationToken: token,
+                // contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    //alert('success');
+                    //alert(data)
+                    //location.reload();
+                    $("#partialView").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    alert(request.status);
+                    alert(thrownError);
+                    //location.reload();
+                }
+            });
+            // $('#formALD').submit();
+            //location.reload();
+        }
+    </script>
+}

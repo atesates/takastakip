@@ -1,0 +1,71 @@
+﻿@model RegisterViewModel
+
+@{
+    Layout = "~/Views/Shared/DisplayTemplates/_Layout.cshtml";
+
+}
+
+<div class="page-header">
+    <h4>Kullanıcı Ekle</h4>
+</div>
+<hr />
+@if (TempData["Message"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-danger">
+        <i class="fa fa-info-circle fa-3x"></i>
+        <br />
+        @TempData["Message"]
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()//herkese açık bir yer, güvenlik açısından
+    <div class="form-group">
+        @Html.LabelFor(model => model.User.Email, new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.User.Email, new { @class = "form-control", @placeholder = "E-posta adresi yazınız..." })
+        @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.User.FirstName, new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.User.FirstName, new { @class = "form-control", @placeholder = "Adını yazınız..." })
+        @Html.ValidationMessageFor(model => model.User.FirstName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.User.LastName, new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.User.LastName, new { @class = "form-control", @placeholder = "Soyadını yazınız..." })
+        @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Eczane.Adi, new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.Eczane.Adi, new { @class = "form-control", @placeholder = "Eczane Adını yazınız..." })
+        @Html.ValidationMessageFor(model => model.Eczane.Adi, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Eczane.EczaneGln, new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.Eczane.EczaneGln, new { @class = "form-control", @placeholder = "eczane Gln yazınız..." })
+        @Html.ValidationMessageFor(model => model.Eczane.EczaneGln, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Grup.Adi, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.DropDownList("GrupId", null, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Grup.Adi, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Kaydet</button>
+
+}
+
+
+
+
+@section Scripts{
+    @*<script src="https://code.jquery.com/jquery-1.10.2.js"
+        integrity="sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo="
+        crossorigin="anonymous"></script>*@
+    @Scripts.Render("~/bundle/validation/scripts")
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 3000);
+    </script>
+}
+

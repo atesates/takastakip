@@ -1,0 +1,183 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Talep
+@{
+    ViewBag.Title = "Talep |  Takas Takip";
+}
+<div class="card">
+    <div class="card-header">
+        <h5>Talep Oluştur</h5>
+        @if (TempData["Message"] != null)
+        {
+            <p>&nbsp;</p>
+            <div class="alert alert-danger">
+                <i class="fa fa-info-circle fa-3x"></i>
+                <br />
+                @TempData["Message"]
+            </div>
+        }
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IlacId, "İlaç hızlı arama", htmlAttributes: new { @class = "control-label col-md-12" })
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                </div>
+                                <input type="search" name="Keywords" id="searching" class="form-control form-control-sm" placeholder="4 harf girerek ilaç ara.." />
+
+                            </div>
+                        </div>
+                    </div>
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IlacId, "İlaç", htmlAttributes: new { @class = "control-label col-md-4" })
+
+                            <div>
+                                @Html.DropDownList("IlacId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.IlacId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TalepVerenEczaneGrupId, "Grup", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.DropDownList("TalepVerenEczaneGrupId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.TalepVerenEczaneGrupId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TalepDurumId, "Talep Durumu", htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div>
+                                @Html.DropDownList("TalepDurumId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.TalepDurumId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DepoFiyati, "Depo Fiyatı", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.DepoFiyati, "Depo Fiyatı", new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "depofiyati" } })
+                                @Html.ValidationMessageFor(model => model.DepoFiyati, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Minimum, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.Minimum, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                @Html.ValidationMessageFor(model => model.Minimum, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BitisTarihi, "Bitiş Tarihi", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @*@Html.EditorFor(model => model.BitisTarihi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })*@
+                                @Html.TextBoxFor(model => model.BitisTarihi, new { @class = "form-control form-control-sm datepicker p-2", autocomplete = "off", placeHolder = "Bitiş Tarihi" })
+
+                                @Html.ValidationMessageFor(model => model.BitisTarihi, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TalepMiktari, "Talep Miktarı", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.TalepMiktari, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "alimmiktari" } })
+                                @Html.ValidationMessageFor(model => model.TalepMiktari, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Maximum, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.Maximum, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                @Html.ValidationMessageFor(model => model.Maximum, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Aciklama, "Açıklama", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.Aciklama, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                @Html.ValidationMessageFor(model => model.Aciklama, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Ekle" id="Submitim" class="btn btn-primary" />
+                        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+    @Scripts.Render("~/bundle/bootstrap-datepicker/scripts")
+
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    @*@Scripts.Render("~/bundle/validation/scripts")*@
+    @Scripts.Render("~/bundle/bootstrap-datepicker/scripts")
+
+
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 3000);
+
+        //$(".datepicker").datepicker({
+        //    dateFormat: "dd.mm.yy",
+        //    changeYear: true,
+        //    monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+        //    dayNamesMin: ["Pa", "Pt", "Sl", "Ça", "Pe", "Cu", "Ct"],
+        //    firstDay: 1,
+        //    startDate: '01.01.2018',
+        //});
+    </script>
+
+    <script>
+        $(function () {
+            $('#Submitim').click('input', function () {
+                //noktayı virgül yap çünkü validation nokta kabul etmiyor
+                $("#depofiyati").val($("#depofiyati").val().replace(".", ","));
+            });
+            
+            $('#searching').on('input', function () {
+                if ($('#searching').val().length > 3) {
+                    // alert($('#searching').val())
+                    window.location.href = '/Kullanici/Teklifim/Create/' + $('#searching').val();
+                }
+
+            });
+        });
+    </script>
+
+}

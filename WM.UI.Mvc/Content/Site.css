@@ -1,0 +1,221 @@
+﻿
+.table-hover > tbody > tr:hover {
+    background-color: #bee5eb
+}
+
+body > .container-fluid {
+    padding-bottom: 160px;
+}
+
+.buttonCakma {
+    cursor: pointer;
+    color: blue;
+}
+/*.classelement {
+    color: aqua
+}*/
+/*p{
+    color:orangered
+}*/
+#idelement {
+    color: brown
+}
+.elemaniUcur{
+    display:none
+}
+.elemaniKaldir {
+    margin-top:-30%;
+    margin-left:20%
+}
+.elemaniIndir{
+    margin-top:100%
+}
+.elemaniKondur {
+    display: block
+}
+.elemaniKondurRow {
+    display: table-row
+}
+.elemaniGoster {
+    visibility:visible
+}
+.elemaniGosterme {
+    visibility: hidden
+}
+ul li a:hover {
+    color: #bee5eb
+}
+
+.jumbotron {
+    background-image: url("../Img/img7.jpg");
+    background-size: cover;
+    height: auto;
+}
+
+th, td {
+    padding: 5px;
+}
+
+th {
+    background-color: rgb(248, 248, 248);
+}
+
+#gridT, #gridT tr {
+    border: 1px solid #0D857B;
+}
+
+#subT, #subT tr {
+    border: 1px solid #f3f3f3;
+}
+
+#subT {
+    margin: 0px 0px 0px 10px;
+    padding: 5px;
+    width: 95%;
+}
+
+    #subT th {
+        font-size: 12px;
+    }
+
+.hoverEff {
+    cursor: pointer;
+    /*background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -7px;
+    background-repeat: no-repeat;*/
+}
+
+    .hoverEff:hover {
+        background-color: rgb(248, 242, 242);
+    }
+
+.expandm {
+    background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -27px;
+    background-repeat: no-repeat;
+}
+
+.collapsem {
+    background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -7px;
+    background-repeat: no-repeat;
+}
+
+.hoverEffforHeader {
+    cursor: pointer;
+    /*background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -7px;
+    background-repeat: no-repeat;*/
+}
+
+    .hoverEffforHeader:hover {
+        background-color: rgb(248, 242, 242);
+    }
+.expandmForHeader {
+    background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -27px;
+    background-repeat: no-repeat;
+}
+
+.collapsemForHeader {
+    background-image: url('../../../../Content/images/pm.png');
+    background-position-x: -7px;
+    background-repeat: no-repeat;
+}
+
+.maviRenk{
+    color:blue;
+    
+}
+
+.arkaPlanRengiKapandi {
+    background-color: #dadada;
+}
+.arkaPlanRengiBarkodsuzGonderildi {
+    background-color: #bee5eb;
+}
+.arkaPlanRengiBarkodluGonderildi {
+    background-color: #b8daff;
+}
+.arkaPlanRengiAktif {
+    background-color: #c3e6cb;
+}
+.arkaPlanRengiBeklemede {
+    background-color: #ffeeba;
+}
+.arkaPlanRengiPasif {
+    background-color: #f5c6cb;
+}
+.arkaPlanRengiBlue {
+    background-color: #0275d8;
+}
+.tableOrdinaryColumns{
+    width:3%;
+}
+.tableOrdinaryBigColumns {
+    width: 12%;
+}
+.tableOrdinaryMediumColumns {
+    width: 10%;
+}
+.tableRowDesign {
+    height: 10px;
+    font-size: 11px;
+    height: 5px;
+    text-size-adjust: auto;
+}
+    .tableRowDesign tr {
+        line-height: 15px;
+    }
+.tableInnerRowDesign {
+    height: 10px;
+    font-size: 11px;
+    height: 5px;
+    text-size-adjust: auto;
+}
+.sayfaUstBolum {
+    padding: 0px 0px 0px 0px ;
+    background-color: white
+}
+.sayfaPartialBolum {
+    background-color: white;
+    padding:5px 15px 0px 15px
+}
+.aciklamalarim {
+    /*height: 35px;*/
+    font-size: small;
+    background-color: lightblue;
+}
+.filtreDropDown {
+    /*height: 35px;*/
+    font-size: small;
+}
+/*body {
+    font-family: Verdana;
+}*/
+
+.c3-line, .c3-focused {
+    stroke-width: 3px !important;
+}
+
+.c3-bar {
+    stroke: white !important;
+    stroke-width: 1;
+}
+
+.c3 text {
+    font-size: 12px;
+    color: grey;
+}
+
+.tick line {
+    stroke: white;
+}
+
+.c3-axis path {
+    stroke: grey;
+}
+
+.c3-circle {
+    opacity: 1 !important;
+}

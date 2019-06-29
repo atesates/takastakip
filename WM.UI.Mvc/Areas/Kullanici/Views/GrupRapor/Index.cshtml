@@ -1,0 +1,302 @@
+﻿
+@model  GrupRaporViewModel
+
+@{
+    ViewBag.Title = "Grup Rapor |  Takas Takip";
+}
+<div class="row">
+    <div class="col-2">
+        <h5>
+            Grup Rapor
+        </h5>
+    </div>
+
+    <div class="col-2" >
+        @Html.LabelFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi, htmlAttributes: new { @class = "control-label pull-right" })
+
+    </div>
+    <div class="col-3" >
+        @Html.DropDownList("EczaneGrupId", null, htmlAttributes: new { onchange = "redirect(this.value)", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EczaneGrupDetaylar.FirstOrDefault().Id, "", new { @class = "text-danger" })
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-2">
+        @using (Html.BeginForm("Search", "GrupRapor", FormMethod.Get))
+        {
+            <div class="form-inline mb-2">
+                <div class="form-group">
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input type="text" id="myInput" class="form-control" placeholder="Ara.." aria-label="Ara.." aria-describedby="basic-addon1">
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+    <div class="col-8"></div>
+    <div class="col-2">
+    
+    <button class="btn btn-outline-dark btn-sm" type="button" id="btnExceleAktar">
+    <i class="fa fa-file-excel-o text-success"></i> Excele Aktar
+    <i class="fa fa-download"></i>
+</button>
+    </div>
+</div>
+@if (Model.AlimlarGroupByEczaneGrupId != null)
+{
+    <table class="table table-sm table-hover">
+        <thead class="thead-light tableRowDesign">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().GrupAdi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().EczaneGln)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().EczaneAdi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().Bakiye)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().BuAyHareketleri)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().GecenAyHareketleri)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().DagittigiTeklifSayisi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().DagitimToplami)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().GrubaGirdigiTeklifSayisi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().ToplamAlimMiktari)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlimlarGroupByEczaneGrupId.FirstOrDefault().TekliflerdenKazandirdigiMiktar)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="eczaneTablo">
+            @foreach (var item in Model.AlimlarGroupByEczaneGrupId)
+            {
+                <tr class="tableRowDesign">
+                    <th>
+                        @Html.DisplayFor(model => item.GrupAdi)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.EczaneGln)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.EczaneAdi)
+                    </th>
+                    @if (item.Bakiye > 0)
+                    {
+                        <th style="color:forestgreen">
+                            @Html.DisplayFor(model => item.Bakiye)
+                        </th>
+                    }
+                    else if (item.Bakiye < 0)
+                    {
+                        <th style="color:red">
+                            @Html.DisplayFor(model => item.Bakiye)
+                        </th>}
+                    else
+                    {
+                        <th>
+                            @Html.DisplayFor(model => item.Bakiye)
+                        </th>
+                    }
+                    <th>
+                        @Html.DisplayFor(model => item.BuAyHareketleri)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.GecenAyHareketleri)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.DagittigiTeklifSayisi)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.DagitimToplami)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.GrubaGirdigiTeklifSayisi)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.ToplamAlimMiktari)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.TekliflerdenKazandirdigiMiktar)
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- pager -->
+    if (Model.Pager.EndPage > 1)
+    {
+    <ul class="pagination">
+        @if (Model.Pager.CurrentPage > 1)
+        {
+            <li>
+                <a class="page-link" href="~/Kullanici/GrupRapor/Index?id=@Model.EczaneGrupDetaylar.FirstOrDefault().GrupId">First</a>
+            </li>
+            <li>
+                <a class="page-link" href="~/Kullanici/GrupRapor/Index?page=@(Model.Pager.CurrentPage - 1)&id=@Model.EczaneGrupDetaylar.FirstOrDefault().GrupId">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="page-link">First</a>
+            </li>
+            <li>
+                <a class="page-link">Previous</a>
+            </li>
+        }
+
+        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            <li class="@(page == Model.Pager.CurrentPage ? "page-item active" : "page-item")">
+                <a class="page-link" href="~/Kullanici/GrupRapor/Index?page=@page&id=@Model.EczaneGrupDetaylar.FirstOrDefault().GrupId">@page</a>
+            </li>
+
+        }
+
+        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <li>
+                <a class="page-link" href="~/Kullanici/GrupRapor/Index?page=@(Model.Pager.CurrentPage + 1)&id=@Model.EczaneGrupDetaylar.FirstOrDefault().GrupId">Next</a>
+            </li>
+            <li>
+                <a class="page-link" href="~/Kullanici/GrupRapor/Index?page=@(Model.Pager.TotalPages)&id=@Model.EczaneGrupDetaylar.FirstOrDefault().GrupId">Last</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="page-link" >Next</a>
+            </li>
+            <li>
+                <a class="page-link" >Last</a>
+            </li>
+        }
+    </ul>
+    }
+}
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#eczaneTablo tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            $('#btnExceleAktar').click(function () {
+                // alert('ConfirmSubmit')
+                exportToExcel();
+                //location.reload();
+            });
+            function exportToExcel() {
+                var htmls = "";
+                var uri = 'data:application/vnd.ms-excel;base64,';
+                var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+                var base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                };
+
+                var format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                };
+
+                htmls = $("table").html();
+
+                var ctx = {
+                    worksheet: 'Worksheet',
+                    table: htmls
+                }
+
+                var link = document.createElement("a");
+                link.download = "export.xls";
+                link.href = uri + base64(format(template, ctx));
+                link.click();
+            }
+        });
+        function redirect(dropDownValue) {
+            //alert('dropDownValue:' + dropDownValue);
+            //alert('$(.form - control).val():' + $('.form-control').val());
+
+            window.location.href = '/Kullanici/GrupRapor/Index/' + dropDownValue;
+            @*@ViewBag.grupId = dropDownValue;
+            alert(@ViewBag.grupId)*@
+        }
+
+        function BindGridViews() {
+            // alert('-1');
+            var kulup_id = $('.form-control').val();
+            // alert('0');
+            $.ajax({
+                type: "POST",
+                url: "Kullanici/GrupRapor/Index",
+                data: "{'id':" + kulup_id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //sıçrayan topu göster hazır olmayan table ları gösterme
+                    //document.getElementById("div1").style.visibility = "hidden";
+                    //document.getElementById("loading").style.visibility = "visible";
+                    alert('0.1');
+                    $.each(data, function (i, item) {
+                        alert('1');
+                        //var loop = data.length;
+                        //alert('item.Kort_id:' + item.Kort_id );
+                        //alert('item.Kort_adi:' + item.Kort_adi );
+                        //alert('item.Oyuncu1_adi:' + item.Oyuncu1_adi );
+
+                    });
+
+                    alert('11');
+                    //setTimeout(
+                    //    BindGridViews2, /* Request next message  */
+                    //    2000 /* ..after 1 seconds */
+                    // );
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    addmsg("error", textStatus + " (" + errorThrown + ")");
+                    alert(textStatus + " (" + errorThrown + ")");
+
+                    //setTimeout(
+                    //    BindGridViews2, /* Try again after.. */
+                    //    15000
+                    //); /* milliseconds (15seconds) */
+                }
+
+            });
+        };
+    </script>
+}

@@ -1,0 +1,34 @@
+﻿@model WM.Northwind.Entities.ComplexTypes.IlacTakip.MenuAltRoleDetay
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h4>Details</h4>
+
+<div>
+    <h4>MenuAltRole</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MenuAltAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MenuAltAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RolAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RolAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Geri Dön", "Index")
+</p>

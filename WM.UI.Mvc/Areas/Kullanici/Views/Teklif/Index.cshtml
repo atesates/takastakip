@@ -1,0 +1,127 @@
+﻿@model TeklifDetayViewModel
+@{
+    ViewBag.Title = "Teklif |  Takas Takip";
+}
+
+<!-- #region ajaxOptions -->
+@{
+
+    var getAjaxTeklifler = new AjaxOptions
+    {
+        AllowCache = false,
+
+        Url = Url.Action("GetTeklifler", "Teklif"),
+        HttpMethod = "GET",
+        UpdateTargetId = "alimdetaylar",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+
+}
+@using (Ajax.BeginForm(null, null, getAjaxTeklifler, new { id = "formTeklifler" }))
+{
+    @Html.Hidden("page")
+}
+
+@{
+    SelectList ITStransferDurumlar = ViewBag.ITStransferDurumId;
+}
+@{
+    SelectList teklifTurler = ViewBag.TeklifTurId;
+    SelectList teklifDurumlar = ViewBag.TeklifDurumId;
+    SelectList yayinlamaTurler = ViewBag.YayinlamaTurId;
+    SelectList ilaclar = ViewBag.IlacId;
+    var rolId = ViewBag.rolId;
+}
+
+@*---------------------------------buttons-------------------------------------*@
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-1">
+                <h5>
+                    Teklifler
+                </h5>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-sm btn-outline-success ml-5" href="@Url.Action("Create", "Teklifim", new { area= "Kullanici" })"><span class="fa fa-plus"></span> Yeni Teklif Oluştur</a>
+              
+            </div>
+            <div class="col-4">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="alimdetaylar" class="row sayfaPartialBolum">
+                @*-----------------TeklifDetayAlimDetaylarPartialView-------------------------*@
+        </div>     
+    </div>
+</div>
+
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+    @section Styles{
+        @Styles.Render("~/bundle/jqueryui/style")
+    }
+    @section Scripts{
+        @Scripts.Render("~/bundle/ajax")
+        @Scripts.Render("~/bundle/queryui/scripts")
+
+        <script>
+
+            $('#formTeklifler').submit();
+            function filterTeklifDurum() {
+                var teklifDurumId = $('#teklifDurumId').val();
+                var alimDurumId = $('#alimDurumId').val();
+                var Page = $('#page').val();
+                $.ajax({
+                    type: "GET",
+                    url: "../../../Kullanici/Teklif/GetTeklifler",
+                    data: {
+                        teklifDurumId: teklifDurumId,
+                        alimDurumId: alimDurumId,
+                        page: Page,
+                    },
+                    dataType: "html",
+                    success: function (data) {
+                        $("#alimdetaylar").html(data);
+                    },
+                    error: function (request, textStatus, thrownError) {
+                        //alert(request.status);
+                        // alert(thrownError);
+                        alert("Lütfen Seçim Yapınız")
+                        //location.reload();
+                    }
+                });
+            }
+            function filterAlimDurum() {
+                var teklifDurumId = $('#teklifDurumId').val();
+                var alimDurumId = $('#alimDurumId').val();
+                //alert(alimDurumId)
+                var Page = $('#page').val();
+                $.ajax({
+                    type: "GET",
+                    url: "../../../Kullanici/Teklif/GetTeklifler",
+                    data: {
+                        teklifDurumId: teklifDurumId,
+                        alimDurumId: alimDurumId,
+                        page: Page,
+                    },
+                    dataType: "html",
+                    success: function (data) {
+                        $("#alimdetaylar").html(data);
+                    },
+                    error: function (request, textStatus, thrownError) {
+                        //alert(request.status);
+                        // alert(thrownError);
+                        alert("Lütfen Seçim Yapınız")
+                        //location.reload();
+                    }
+                });
+            }
+        </script>
+    }

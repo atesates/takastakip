@@ -1,0 +1,791 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9C0610ED-27AC-401D-8A8B-6C1F9D8CF76F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WM.UI.Mvc</RootNamespace>
+    <AssemblyName>WM.UI.Mvc</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Canvas.v1, Version=0.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\canvas-lms.v1.0.0.8\lib\portable-net40+sl50+win+wp80\Canvas.v1.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FakeData.1.0.0\lib\FakeData.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.0.100\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.Mvc5.8.0.100\lib\net45\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.0.100\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSharp.Core.4.5.2\lib\net45\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Grid.Mvc.Ajax, Version=1.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grid.Mvc.Ajax.1.0.31\lib\Grid.Mvc.Ajax.dll</HintPath>
+    </Reference>
+    <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="ILOG.Concert, Version=12.6.0.0, Culture=neutral, PublicKeyToken=7906592bc7cc7340, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\IBM\ILOG\CPLEX_Studio126\cplex\bin\x86_win32\ILOG.Concert.dll</HintPath>
+    </Reference>
+    <Reference Include="ILOG.CPLEX, Version=12.6.0.0, Culture=neutral, PublicKeyToken=7906592bc7cc7340, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\IBM\ILOG\CPLEX_Studio126\cplex\bin\x86_win32\ILOG.CPLEX.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.2.6\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcPaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MVC4.Paging.3.1.1\lib\net40\MvcPaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.4.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.4.0.1\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.4.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGridMvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGridMvc.1.0.0\lib\net40\WebGridMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.6\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.6\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker.min.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker.css" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\EMailMessage.html" />
+    <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\images\hemsireCizelgeleme2.jpg" />
+    <Content Include="Content\images\icon.png" />
+    <Content Include="Content\images\ilac.png" />
+    <Content Include="Content\images\ilac2.png" />
+    <Content Include="Content\images\NobetciEczaneLogo2.png" />
+    <Content Include="Content\images\nobetciEczaneResim2.jpg" />
+    <Content Include="Content\images\orig.gif" />
+    <Content Include="Content\images\ph1.png" />
+    <Content Include="Content\images\ph2.jpg" />
+    <Content Include="Content\images\ph2.png" />
+    <Content Include="Content\images\ph3.jpg" />
+    <Content Include="Content\images\ph3.png" />
+    <Content Include="Content\images\ph4.jpg" />
+    <Content Include="Content\images\ph5.jpg" />
+    <Content Include="Content\images\pm.png" />
+    <Content Include="Content\pivot.min.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Scripts\bootstrap-datepicker-ekle.js" />
+    <Content Include="Scripts\bootstrap-datepicker-globalize.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-select.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\c3_renderers.min.js" />
+    <Content Include="Scripts\canvasjs.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\cldr.js" />
+    <Content Include="Scripts\d3\d3.js" />
+    <Content Include="Scripts\d3\d3.min.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\datetimepicker\moment.js" />
+    <Content Include="Content\c3.css" />
+    <Content Include="Content\c3.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css">
+      <DependentUpon>font-awesome.css</DependentUpon>
+    </Content>
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\ladda-bootstrap\ladda-themeless.min.css" />
+    <Content Include="Content\pivot.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Global.asax" />
+    <Content Include="App_Code\MyHelperMethods.cshtml" />
+    <Content Include="App_Code\BootstrapHelper.cshtml" />
+    <Content Include="Content\images\filter.png" />
+    <Content Include="Content\images\filtered.png" />
+    <Content Include="Content\images\filtered_clear.png" />
+    <Content Include="Content\images\img1.jpg" />
+    <Content Include="Content\images\img2.jpg" />
+    <Content Include="Content\images\img3.jpg" />
+    <Content Include="Content\images\img4.jpg" />
+    <Content Include="Content\images\img5.jpg" />
+    <Content Include="Content\images\img6.jpg" />
+    <Content Include="Content\images\img7.jpg" />
+    <Content Include="Content\images\nobetci-eczaneler.png" />
+    <Content Include="Content\images\sld1.jpg" />
+    <Content Include="Content\images\sld2.jpg" />
+    <Content Include="Content\images\sld3.jpg" />
+    <Content Include="Content\images\transport.jpg" />
+    <Content Include="Content\images\transport2.png" />
+    <Content Include="Content\images\tumblr_static_9.jpg" />
+    <Content Include="Scripts\c3.js" />
+    <Content Include="Scripts\c3.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\globalize.js" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\GridMvc\gridmvc-ext.js" />
+    <Content Include="Scripts\GridMvc\gridmvc.customwidgets.js" />
+    <Content Include="Scripts\GridMvc\gridmvc.js" />
+    <Content Include="Scripts\GridMvc\gridmvc.lang.fr.js" />
+    <Content Include="Scripts\GridMvc\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\GridMvc\gridmvc.lang.tr.js" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Scripts\GridMvc\gridmvc.min.js.map" />
+    <Content Include="Grid.Mvc.Ajax.readme" />
+    <Content Include="Scripts\GridMvc\gridmvc.min.js" />
+    <Content Include="Scripts\holder.min.js" />
+    <Content Include="Scripts\GridMvc\ladda-bootstrap\ladda.min.js" />
+    <Content Include="Scripts\GridMvc\ladda-bootstrap\spin.min.js" />
+    <Content Include="Areas\Kullanici\Views\web.config" />
+    <Content Include="Areas\Kullanici\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Menu\MenuPartial.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAlt\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAlt\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAlt\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAlt\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAlt\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAltRole\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAltRole\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAltRole\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAltRole\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuAltRole\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuRole\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuRole\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuRole\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuRole\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\MenuRole\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\AlimDurum\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\AlimDurum\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\AlimDurum\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\AlimDurum\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\AlimDurum\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacDurum\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacDurum\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacDurum\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacDurum\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacDurum\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\ITStransferDurum\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\ITStransferDurum\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\ITStransferDurum\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\ITStransferDurum\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\ITStransferDurum\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifDurum\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifDurum\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifDurum\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifDurum\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifDurum\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifTur\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifTur\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifTur\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifTur\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\TeklifTur\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\YayinlamaTur\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\YayinlamaTur\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\YayinlamaTur\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\YayinlamaTur\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\YayinlamaTur\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrupPartial\EczaneGrupPartial.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrup\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrup\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrup\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrup\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneGrup\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklif\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Grup\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Grup\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Grup\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Grup\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Grup\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GrupRapor\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneUser\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneUser\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneUser\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneUser\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneUser\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\QRKod\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\QRKod\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\Delete.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimUrunlereGore\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimEczanelereGore\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimEczanelereGore\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimEczanelereGore\Details.cshtml" />
+    <Content Include="Areas\Kullanici\Views\IlacRapor\Index.cshtml" />
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\CreateViaApi.cshtml" />
+    <Content Include="Content\bootstrap-datepicker.css.map" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimEczanelereGore\GonderdiklerimEczanelereGorePartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\GonderdiklerimUrunlereGore\GonderdiklerimUrunlereGorePartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklifim\TeklifimPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alimim\AlimimPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilimim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talebim\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talep\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talebim\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Eczane\EczanePartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Teklif\TeklifPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talep\TalepPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talebim\TalebimPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilimim\KatilimimPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilimim\Create.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilimim\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Talebim\Edit.cshtml" />
+    <Content Include="Areas\Kullanici\Views\EczaneHome\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\DinamikRapor\Index.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Alim\AlimPartialView.cshtml" />
+    <Content Include="Areas\Kullanici\Views\Katilim\KatilimPartialView.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
+    <Content Include="Scripts\d3\README.md" />
+    <Content Include="Scripts\d3\CHANGES.md" />
+    <Content Include="Scripts\d3\API.md" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\bootstrap-select.js.map" />
+    <Content Include="Scripts\d3\LICENSE" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.peity.js" />
+    <Content Include="Scripts\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\show_code.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\webGrid.js" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\MyJavaScript.js" />
+    <Content Include="Scripts\pivot.js" />
+    <Content Include="Scripts\tips_data.min.js" />
+    <Content Include="Scripts\GridMvc\URI.js" />
+    <Content Include="vis\img\network\acceptDeleteIcon.png" />
+    <Content Include="vis\img\network\addNodeIcon.png" />
+    <Content Include="vis\img\network\backIcon.png" />
+    <Content Include="vis\img\network\connectIcon.png" />
+    <Content Include="vis\img\network\cross.png" />
+    <Content Include="vis\img\network\cross2.png" />
+    <Content Include="vis\img\network\deleteIcon.png" />
+    <Content Include="vis\img\network\downArrow.png" />
+    <Content Include="vis\img\network\editIcon.png" />
+    <Content Include="vis\img\network\leftArrow.png" />
+    <Content Include="vis\img\network\minus.png" />
+    <Content Include="vis\img\network\plus.png" />
+    <Content Include="vis\img\network\rightArrow.png" />
+    <Content Include="vis\img\network\upArrow.png" />
+    <Content Include="vis\img\network\zoomExtends.png" />
+    <Content Include="vis\vis-graph3d.min.js" />
+    <Content Include="vis\vis-network.min.css" />
+    <Content Include="vis\vis-network.min.js" />
+    <Content Include="vis\vis-timeline-graph2d.min.css" />
+    <Content Include="vis\vis-timeline-graph2d.min.js" />
+    <Content Include="vis\vis.css" />
+    <Content Include="vis\vis.js" />
+    <Content Include="vis\vis.min.css" />
+    <Content Include="vis\vis.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\KullaniciAreaRegistration.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\AlimimController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\DinamikRaporController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\EczaneHomeController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\EczaneUserController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\GonderdiklerimUrunlereGoreController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\IlacRaporController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\GrupRaporController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\GonderdiklerimEczanelereGoreController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\KatilimController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\KatilimimController.cs" />
+    <Compile Include="Areas\Kullanici\Models\TeklifAlimViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\QRKodController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TalebimController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TalepController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TeklifimController .cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TeklifController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\AlimController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\AlimDurumController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\EczaneController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\GrupController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\EczaneGrupController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\IlacDurumController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\ITStransferController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\MenuAltController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\MenuAltRoleController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\MenuRoleController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\MyDrop.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TeklifDurumController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\TeklifTurController.cs" />
+    <Compile Include="Areas\Kullanici\Controllers\YayinlamaTurController.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimGroupByTeklifIdAlimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\KatilimGroupByTalepIdKatilimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\KatilimDetayKatilimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\KatilimGroupByTalepId.cs" />
+    <Compile Include="Areas\Kullanici\Models\KatilimDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\TalepDetayKatilimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\TeklifDetayEczaneGrupDetayarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\EczaneGrupDetayAlimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimDetayAlimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimGroupByEczaneGrupId.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimDetayGroupByIlacId.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimGroupByTeklifId.cs" />
+    <Compile Include="Areas\Kullanici\Models\IlacRaporViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\GrupRaporViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\QRKodDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\AlimDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\EczaneGrupDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\EczaneRaporViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\TeklifDetayAlimDetaylarViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\TalepDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\TeklifDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\EczaneUserDetayViewModel.cs" />
+    <Compile Include="Areas\Kullanici\Models\MenuPartialViewModel.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GoogleMapController.cs" />
+    <Compile Include="Controllers\GridMvcController.cs" />
+    <Compile Include="Controllers\gridMVCSortingController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JqueryExamplesController.cs" />
+    <Compile Include="Controllers\MakaleController.cs" />
+    <Compile Include="Controllers\ModelBindingController.cs" />
+    <Compile Include="Controllers\MyChartController.cs" />
+    <Compile Include="Controllers\PivotTableController.cs" />
+    <Compile Include="Controllers\BaskiController.cs" />
+    <Compile Include="Controllers\VuejsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlHelpers\GridMvcHelper.cs" />
+    <Compile Include="HtmlHelpers\IGridMvcHelper.cs" />
+    <Compile Include="Models\GridMvcAjaxPartialViewModel.cs" />
+    <Compile Include="Models\RegisterViewModel.cs" />
+    <Compile Include="Models\WMUIMvcContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\HelperMethodDemo.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\ViewDemo.cshtml" />
+    <Content Include="Views\GridMvc\Index.cshtml" />
+    <Content Include="Views\JqueryExamples\Index.cshtml" />
+    <Content Include="Views\GoogleMap\Index.cshtml" />
+    <Content Include="Views\Vuejs\Index.cshtml" />
+    <Content Include="Views\GridMvc\GridAjaxPartial.cshtml" />
+    <Content Include="Views\Makale\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Baski\Index.cshtml" />
+    <Content Include="Views\MyChart\Index.cshtml" />
+    <Content Include="Views\PivotTable\Index.cshtml" />
+    <Content Include="Views\GridMvc\Index2.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\_AjaxGridPager.cshtml" />
+    <Content Include="log4net.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\gridMVCSorting\Index.cshtml" />
+    <Content Include="Views\gridMVCSorting\GridMVCSortingPartial.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Time.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Unauthorized.cshtml" />
+    <Content Include="vis\vis.map" />
+    <Content Include="vis\vis.js.map" />
+    <Content Include="Views\Account\Success.cshtml" />
+    <Content Include="Views\Account\Fail.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\_Layout.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Kullanici\Views\ITStransfer\" />
+    <Folder Include="Areas\Kullanici\Views\Yetki\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WM.Core\WM.Core.csproj">
+      <Project>{56E1D3CA-5512-4FC7-8595-D401CC20BADD}</Project>
+      <Name>WM.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WM.Northwind.Business\WM.Northwind.Business.csproj">
+      <Project>{f30e4964-f6ff-4d3c-a30e-07f2df0d71e9}</Project>
+      <Name>WM.Northwind.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WM.Northwind.Entities\WM.Northwind.Entities.csproj">
+      <Project>{aac6410f-016d-4c53-b268-f8cbaa677c5c}</Project>
+      <Name>WM.Northwind.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61098</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:61098/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

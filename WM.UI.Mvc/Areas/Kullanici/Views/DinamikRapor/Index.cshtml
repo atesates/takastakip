@@ -1,0 +1,249 @@
+﻿@model EczaneRaporViewModel
+@{
+    ViewBag.Title = "Rapor |  Takas Takip";
+}
+<div class="row">
+    <div class="col-2">
+        <h5>
+            Dinamik Rapor
+        </h5>
+    </div>
+    <div class="col-2" style="text-align:right">
+        @Html.LabelFor(model => model.EczaneGrupDetaylar.FirstOrDefault().GrupAdi, htmlAttributes: new { @class = "control-label col-md-6" })
+
+    </div>
+    <div class="col-3" style="text-align:left">
+        @Html.DropDownList("EczaneGrupId", null, htmlAttributes: new { onchange = "redirect(this.value)", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.EczaneGrupDetaylar.FirstOrDefault().Id, "", new { @class = "text-danger" })
+
+    </div>
+    <div class="col-3">
+
+    </div>
+    <div class="col-2">
+        <button class="btn btn-outline-dark btn-sm" type="button" id="btnExceleAktar" onclick="tableToExcel('testTable', 'Nöbet Yaz')">
+            <i class="fa fa-file-excel-o text-success"></i> Excele Aktar
+            <i class="fa fa-download"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="tab-pane fade show active" id="pills-dagilim" role="tabpanel" aria-labelledby="pills-dagilim-tab">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-miktar-tab" data-toggle="pill" href="#pills-miktar" role="tab" aria-controls="pills-miktar" aria-selected="true">
+                            <span class="d-none d-md-inline">
+                                Miktar
+                            </span>
+
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-tutar-tab" data-toggle="pill" href="#pills-tutar" role="tab" aria-controls="pills-tutar" aria-selected="false">
+                            Tutar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-oran-tab" data-toggle="pill" href="#pills-oran" role="tab" aria-controls="pills-oran" aria-selected="false">
+                            Oran
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-miktar" role="tabpanel" aria-labelledby="pills-miktar-tab">
+                    <div class="row mt-4">
+                        <div class="col-sm-12 col-md-12">
+                            @*<h5>Nöbetçi Eczaneler <span class="small text-danger">(@DateTime.Now.ToString("MMMM yyyy"))</span></h5>*@
+                            <div id="miktarlar">
+                                @* Pivot tablo *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-tutar" role="tabpanel" aria-labelledby="pills-tutar-tab">
+                    <div class="row mt-4">
+                        <div class="col-sm-12 col-md-12">
+                            <div id="tutarlar">
+                                @* Pivot tablo *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-oran" role="tabpanel" aria-labelledby="pills-oran-tab">
+
+                    <div class="row mt-4">
+                        <div class="col-sm-12 col-md-12">
+                            @*<div class="alert alert-success alert-dismissible fade show" role="alert" id="tarihVeriSinirUyari">
+                                    Bu görünümde aşağıdan <strong>Yıl, Ay, Nöbet Grubu vb.</strong> alanları seçerek veriyi sınırlandırınız !!!
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>*@
+                            <div id="oranlar">
+                                @* Pivot tablo *@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section styles{
+
+    @Styles.Render("~/bundle/pivot/style", "~/bundle/alert_toastr/style")
+    @Styles.Render("~/bundle/bootstrap-select/style")
+    @Styles.Render("~/bundle/bootstrap-datepicker/style")
+
+    <style>
+        .toast-message {
+            font-weight: bold;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundle/ajax")
+    @Scripts.Render("~/bundle/bootstrap-select/scripts")
+    @Scripts.Render("~/bundle/bootstrap-datepicker/scripts")
+
+    @Scripts.Render("~/bundle/queryui/scripts", "~/bundle/pivot/scripts", "~/bundle/alert_toastr/scripts")
+
+
+    <!-- #region export to excel -->
+    <script type="text/javascript">
+            var tableToExcel = (function () {
+
+                var uri = 'data:application/vnd.ms-excel;base64,'
+                    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+                    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+                return function (table, name) {
+                    //$('#testTable thead tr:first').find('th:last').remove();
+                    //$('#testTable tr').find('td:last').remove();
+                    //$('#testTable').find('tr:last').remove();
+                    if (!table.nodeType) table = document.getElementById(table)
+                    var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                    window.location.href = uri + base64(format(template, ctx))
+                }
+            })()
+
+            $root = $('<xml/>');
+
+            //create a workbook
+            $workbook = $('<ss:Workbook/>').attr({
+                "xmlns:ss": "urn:schemas-microsoft-com:office:spreadsheet",
+                "xmlns:x": "urn:schemas-microsoft-com:office:excel",
+                "xmlns:o": "urn:schemas-microsoft-com:office:office"
+            });
+
+            $root.append($workbook);
+
+            //xlsObject = 'data:application/vnd.ms-excel;base64,' + base64.encode(testXML);
+    </script>
+    <!-- #endregion -->
+    <script>
+            $(document).ready(function () {
+                getPivotAyrintili($('#EczaneGrupId').val())
+                
+            });
+            var sonuclar = null
+            var myArray = new Array();
+
+            function redirect(dropDownValue) {
+                getPivotAyrintili(dropDownValue)
+            }
+
+            function getPivotAyrintili(dropDownValue) {
+                //alert('dropDownValue: ' + dropDownValue)
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: "../../../Kullanici/DinamikRapor/getAyrintiliRapor",
+                    data: {
+                        Id: dropDownValue
+                    },
+                    success: function (data) {
+                        //alert('success');
+                        //alert(data)
+                        sonuclar = JSON.parse(JSON.stringify(data));
+                        //alert('sonuclar: ' + sonuclar)
+                        $.each(sonuclar, function (index, n) {
+                            myArray.push({
+                                AlımYapanEczane: n.EczaneAdi,
+                                İlaçAdı: n.IlacAdi,
+                                Miktar: n.Miktar,
+                                TeklifVerenEczane: n.TeklifVerenEczaneAdi,
+                                Tutar: (n.Miktar * n.NetFiyat).toFixed(4),
+                                Kazanç: (n.Miktar * (n.DepoFiyati - n.NetFiyat)).toFixed(4),
+                                AlımTarihi: n.AlimTarihiString,
+                            });
+                        });
+                        myArray = JSON.parse(JSON.stringify(myArray));
+                        pivotTableMiktar()
+                        pivotTableTutar()
+                        pivotTableOran()
+                    },
+                    error: function (request, textStatus, thrownError) {
+                        alert(request.status);
+                        alert(thrownError);
+                    }
+                });
+            }         
+            function pivotTableMiktar() {
+                if (myArray != null && myArray.length > 0) {
+                    miktarDagilim = $(function table4() {
+                        $("#miktarlar").pivotUI(myArray,
+                            {
+                                cols: ["AlımYapanEczane"],
+                                rows: ["TeklifVerenEczane", "İlaçAdı"],
+                                vals: ["Miktar"],
+                                aggregatorName: "Integer Sum",
+                                rendererName: "Heatmap"
+                            }
+                        );
+                    });
+                }
+            }
+            function pivotTableTutar() {
+                if (myArray != null && myArray.length > 0) {
+                    tutarDagilim = $(function table4() {
+                        $("#tutarlar").pivotUI(myArray,
+                            {
+                                cols: ["AlımYapanEczane"],
+                                rows: ["TeklifVerenEczane", "İlaçAdı"],
+                                vals: ["Tutar"],
+                                aggregatorName: "Sum",
+                                rendererName: "Heatmap"
+                            }
+                        );
+                    });
+                }
+            }
+            function pivotTableOran() {
+                if (myArray != null && myArray.length > 0) {
+                    oranDagilim = $(function table4() {
+                        $("#oranlar").pivotUI(myArray,
+                            {
+                                cols: ["AlımYapanEczane"],
+                                rows: ["TeklifVerenEczane", "İlaçAdı"],
+                                vals: ["Tutar"],
+                                aggregatorName: "Sum as Fraction of Total",
+                                rendererName: "Heatmap"
+                            }
+                        );
+                    });
+                }
+        }
+
+       
+    </script>
+}

@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F30E4964-F6FF-4D3C-A30E-07F2DF0D71E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WM.Northwind.Business</RootNamespace>
+    <AssemblyName>WM.Northwind.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <DontImportPostSharp>True</DontImportPostSharp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.0.100\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=4.1.17.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.4.1.17\lib\net35-client\PostSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\Authorization\IUserRoleService.cs" />
+    <Compile Include="Abstract\Authorization\IRoleService.cs" />
+    <Compile Include="Abstract\Authorization\IUserService.cs" />
+    <Compile Include="Abstract\IlacTakip\IAlimDurumService.cs" />
+    <Compile Include="Abstract\IlacTakip\IAlimService.cs" />
+    <Compile Include="Abstract\IlacTakip\IEczaneGrupService.cs" />
+    <Compile Include="Abstract\IlacTakip\IEczaneService.cs" />
+    <Compile Include="Abstract\IlacTakip\IEczaneUserService.cs" />
+    <Compile Include="Abstract\IlacTakip\IGrupService.cs" />
+    <Compile Include="Abstract\IlacTakip\IIlacDurumService.cs" />
+    <Compile Include="Abstract\IlacTakip\IIlacService.cs" />
+    <Compile Include="Abstract\IlacTakip\IITStransferDurumService.cs" />
+    <Compile Include="Abstract\IlacTakip\IKatilimService.cs" />
+    <Compile Include="Abstract\IlacTakip\ILogService.cs" />
+    <Compile Include="Abstract\IlacTakip\IMenuAltRoleService.cs" />
+    <Compile Include="Abstract\IlacTakip\IMenuAltService.cs" />
+    <Compile Include="Abstract\IlacTakip\IMenuRoleService.cs" />
+    <Compile Include="Abstract\IlacTakip\IMenuService.cs" />
+    <Compile Include="Abstract\IlacTakip\IQRKodService.cs" />
+    <Compile Include="Abstract\IlacTakip\ISehirService.cs" />
+    <Compile Include="Abstract\IlacTakip\ITalepDurumService.cs" />
+    <Compile Include="Abstract\IlacTakip\ITalepService.cs" />
+    <Compile Include="Abstract\IlacTakip\ITeklifDurumService.cs" />
+    <Compile Include="Abstract\IlacTakip\ITeklifService.cs" />
+    <Compile Include="Abstract\IlacTakip\ITeklifTurService.cs" />
+    <Compile Include="Abstract\IlacTakip\IYayinlamaTurService.cs" />
+    <Compile Include="Abstract\IAdminService.cs" />
+    <Compile Include="Concrete\Managers\AdminManager.cs" />
+    <Compile Include="Concrete\Managers\Authorization\UserRoleManager.cs" />
+    <Compile Include="Concrete\Managers\Authorization\RoleManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\AlimDurumManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\AlimManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\EczaneGrupManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\EczaneManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\EczaneUserManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\GrupManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\IlacDurumManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\IlacManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\ITStransferDurumManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\KatilimManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\LogManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\MenuAltManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\MenuAltRoleManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\MenuManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\MenuRoleManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\QRKodManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\SehirManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\TalepDurumManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\TalepManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\TeklifDurumManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\TeklifManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\TeklifTurManager.cs" />
+    <Compile Include="Concrete\Managers\IlacTakip\YayinlamaTurManager.cs" />
+    <Compile Include="Concrete\Managers\Authorization\UserManager.cs" />
+    <Compile Include="DependencyResolvers\Ninject\BusinessModule.cs" />
+    <Compile Include="DependencyResolvers\Ninject\InstanceFactory.cs" />
+    <Compile Include="DependencyResolvers\Ninject\ValidationModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationRules\FluentValidation\TalepValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\TeklifValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\EczaneGrupValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\LoginItemValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\EczaneValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WM.Core\WM.Core.csproj">
+      <Project>{56E1D3CA-5512-4FC7-8595-D401CC20BADD}</Project>
+      <Name>WM.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WM.Northwind.DataAccess\WM.Northwind.DataAccess.csproj">
+      <Project>{255d8fea-7a4f-417f-bab0-bbb07fb36aaf}</Project>
+      <Name>WM.Northwind.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WM.Northwind.Entities\WM.Northwind.Entities.csproj">
+      <Project>{aac6410f-016d-4c53-b268-f8cbaa677c5c}</Project>
+      <Name>WM.Northwind.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\PostSharp.4.1.17\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.1.17\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.4.1.17\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.4.1.17\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
+</Project>

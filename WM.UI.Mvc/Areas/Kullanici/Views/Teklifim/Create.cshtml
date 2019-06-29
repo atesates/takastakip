@@ -1,0 +1,403 @@
+﻿@model WM.Northwind.Entities.Concrete.IlacTakip.Teklif
+@{
+    ViewBag.Title = "Teklif |  Takas Takip";
+}
+<div class="card">
+    <div class="card-header">
+        <h5>Teklif Oluştur</h5>
+        @if (TempData["Message"] != null)
+        {
+            <p>&nbsp;</p>
+            <div class="alert alert-danger">
+                <i class="fa fa-info-circle fa-3x"></i>
+                <br />
+                @TempData["Message"]
+            </div>
+        }
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+
+            <div class="row arkaPlanRengiBarkodluGonderildi">
+                <div class="col-md-offset-2 col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IlacId, "İlaç hızlı arama", htmlAttributes: new { @class = "control-label col-md-4" })
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input type="search" name="Keywords" id="searching" class="form-control form-control-sm" placeholder="4 harf girerek ilaç ara.." />
+
+                        </div>
+                    </div>
+                </div>
+                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IlacId, "İlaç", htmlAttributes: new { @class = "control-label col-md-4" })
+
+                        <div>
+                            @Html.DropDownList("IlacId", null, htmlAttributes: new { @class = "form-control form-control-sm", @id = "ddlIlac" })
+                            @Html.ValidationMessageFor(model => model.IlacId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+
+                <div class="col-md-offset-2 col-md-4 arkaPlanRengiKapandi">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TeklifiVerenEczaneGrupId, "Grup", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @Html.DropDownList("TeklifiVerenEczaneGrupId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                            @Html.ValidationMessageFor(model => model.TeklifiVerenEczaneGrupId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TeklifTurId, "Teklif Türü", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @Html.DropDownList("TeklifTurId", null, htmlAttributes: new { @class = "form-control form-control-sm", @id = "ddlTeklifTur" })
+                            @Html.ValidationMessageFor(model => model.TeklifTurId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div id="ozelEczane" class="form-group">
+                        @Html.LabelFor(model => model.OzelEczaneGrupId, "Özel eczane", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @Html.DropDownList("OzelEczaneGrupId", null, htmlAttributes: new { @class = "form-control form-control-sm" }, optionLabel: "--Eczane Seçiniz--")
+                            @Html.ValidationMessageFor(model => model.OzelEczaneGrupId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.YayinlamaTurId, "Yayınlama Durumu", htmlAttributes: new { @class = "control-label col-md-8" })
+                        <div>
+                            @Html.DropDownList("YayinlamaTurId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                            @Html.ValidationMessageFor(model => model.YayinlamaTurId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TeklifDurumId, "Teklif Durumu", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @Html.DropDownList("TeklifDurumId", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                            @Html.ValidationMessageFor(model => model.TeklifDurumId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-offset-2 col-md-8 arkaPlanRengiPasif">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(model => model.DepoFiyat, "Depo Fiyatı", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="input-group input-group-sm">
+
+                                    @Html.EditorFor(model => model.DepoFiyat, "Depo Fiyatı", new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "depofiyati" } })
+                                    @Html.ValidationMessageFor(model => model.DepoFiyat, "", new { @class = "text-danger" })
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">₺</span>
+                                        <span class="input-group-text sm">0.0000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                @Html.LabelFor(model => model.NetFiyat, "Net Fiyat", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.NetFiyat, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "netfiyat", @readonly = "readonly" } })@*disabled yapınca 0 ekliyor*@
+                                    @*  @Html.ValidationMessageFor(model => model.NetFiyat, "", new { @class = "text-danger" })*@
+                                    @*@Html.ActionLink("hesapla", null, null, new { @class = "btn btn-success", @id="hesapla" })*@
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(model => model.AlimMiktari, "Alım Miktarı", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.AlimMiktari, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "alimmiktari" } })
+                                    @Html.ValidationMessageFor(model => model.AlimMiktari, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                @Html.LabelFor(model => model.MalFazlasi, "Mal Fazlası", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.MalFazlasi, new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "malfazlasi" } })
+                                    @Html.ValidationMessageFor(model => model.MalFazlasi, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row arkaPlanRengiBeklemede">
+                        <div class="col-md-offset-2 col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EtiketFiyati, "Etiket Fiyatı", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.EtiketFiyati, "Etiket Fiyati", new { htmlAttributes = new { @class = "form-control form-control-sm", @id = "etiketFiyati" } })
+                                    @Html.ValidationMessageFor(model => model.EtiketFiyati, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Minimum, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.Minimum, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Minimum, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.HedeflenenAlim, "Hedef Alım", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.HedeflenenAlim, "Hedef Alım", new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                    @Html.ValidationMessageFor(model => model.HedeflenenAlim, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Maksimum, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div>
+                                    @Html.EditorFor(model => model.Maksimum, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Maksimum, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row arkaPlanRengiAktif">
+                <div class="col-md-offset-2 col-md-4 ">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BaslangicTarihi, "Başlangıç Tarihi", htmlAttributes: new { @class = "form-label col-md-8" })
+                        <div>
+                            @Html.TextBoxFor(model => model.BaslangicTarihi, new { @class = "form-control datepicker p-2", autocomplete = "off", placeHolder = "Başlangıç Tarihi" })
+                            @*@Html.EditorFor(model => model.BaslangicTarihi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })*@
+                            @Html.ValidationMessageFor(model => model.BaslangicTarihi, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-offset-2 col-md-4 ">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BitisTarihi, "Bitiş Tarihi", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @*@Html.EditorFor(model => model.BitisTarihi, new { htmlAttributes = new { @class = "form-control form-control-sm" } })*@
+                            @Html.TextBoxFor(model => model.BitisTarihi, new { @class = "form-control datepicker p-2", autocomplete = "off", placeHolder = "Bitiş Tarihi" })
+
+                            @Html.ValidationMessageFor(model => model.BitisTarihi, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-offset-2 col-md-4 ">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IlacMiad, "İlaç Miadı", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div>
+                            @Html.TextBoxFor(model => model.IlacMiad, new { @class = "form-control datepicker p-2", autocomplete = "off", placeHolder = "İlaç Miadı" })
+
+                            @*@Html.EditorFor(model => model.IlacMiad, new { htmlAttributes = new { @class = "form-control form-control-sm" } })*@
+                            @Html.ValidationMessageFor(model => model.IlacMiad, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        
+                <div class="form-group mt-2">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Ekle" id="Submitim" class="btn btn-primary" />
+                        @Html.ActionLink("Listeye Dön", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+    @Scripts.Render("~/bundle/bootstrap-datepicker/style")
+
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    @*@Scripts.Render("~/bundle/validation/scripts")*@
+    @Scripts.Render("~/bundle/bootstrap-datepicker/scripts")
+
+
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(500); }, 3000);
+
+        //$(".datepicker").datepicker({
+        //    dateFormat: "dd.mm.yy",
+        //    changeYear: true,
+        //    monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+        //    dayNamesMin: ["Pa", "Pt", "Sl", "Ça", "Pe", "Cu", "Ct"],
+        //    firstDay: 1,
+        //    startDate: '01.01.2018',
+        //});
+    </script>
+    
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                $('#ozelEczane').addClass("elemaniUcur")
+
+            });
+            $('#ddlIlac').change(function () {
+                var value = $(this).val();
+
+                getEtiketFiyati(value)
+            });
+            function getEtiketFiyati(ilac_id) {
+                //alert(ilac_id)
+                var IlacId = ilac_id;
+                $.ajax({
+                    type: "GET",
+                    url: "../../../Kullanici/Teklifim/getEtiketFiyati",
+                    contentType: "application/json;charset=utf-8",
+                    data: {
+                        id: IlacId
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        //alert(data);
+
+                        $("#etiketFiyati").val(data);
+                        $("#etiketFiyati").val($("#etiketFiyati").val().replace(".", ","));
+
+                       // location.reload();
+                    },
+                    error: function (request, textStatus, thrownError) {
+                        alert('Etiket Fiyatı Bulunamadı')
+                        //alert(request.status);
+                        //alert(thrownError);
+                    }
+                });
+            }
+            $('#ddlTeklifTur').change(function () {
+                
+                var value = $(this).val();
+              //  alert(value)
+                if (value == 2) {
+                    $('#ozelEczane').addClass("elemaniKondur")
+                    $('#ozelEczane').removeClass("elemaniUcur")
+                   // alert('if')
+                    
+                }
+                else {
+                    $('#ozelEczane').addClass("elemaniUcur")
+                    $('#ozelEczane').removeClass("elemaniKondur")
+                 //   alert('else')
+                }
+            });
+            $('#Submitim').click('input', function () {
+                //noktayı virgül yap çünkü validation nokta kabul etmiyor
+                $("#depofiyati").val($("#depofiyati").val().replace(".", ","));
+            });
+            //hesaplarken virgülü nokta yapıyoruz ki doğru hesaplasın
+            //çünkü virgül olunca virgülden sonrasını hesaba katmıyor
+            $('#depofiyati').on('input', function () {//id
+                var alimMiktari = parseInt($('#alimmiktari').val());
+                var malFazlasi = parseInt($('#malfazlasi').val());
+                $("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+                var depoFiyati = parseFloat($('#depofiyati').val());
+
+                var netfiyat = depoFiyati * alimMiktari / (alimMiktari + malFazlasi);
+                netfiyat = netfiyat.toFixed(4);
+
+                if (alimMiktari > 0 && malFazlasi > 0 && depoFiyati > 0) {
+                    $("#netfiyat").val(netfiyat);
+
+                }
+                //en son net fiyatta da virgüle çeviriliyor ki veritabanı kabul etsin.
+                $("#netfiyat").val($("#netfiyat").val().replace(".", ","));
+                //virgülden sonra en fazla 4 hane girebilsin:
+                if ($("#depofiyati").val().length > 6) {
+                   // alert('kırp')
+                    $("#depofiyati").val($("#depofiyati").val().substr(0,6))
+                   // alert('kırp2')
+                }
+                //$("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+             
+            });
+            //hesaplarken virgülü nokta yapıyoruz ki doğru hesaplasın
+            //çünkü virgül olunca virgülden sonrasını hesaba katmıyor
+            $('#alimmiktari').on('input', function () {//id
+                //alert(10)
+                var alimMiktari = parseInt($('#alimmiktari').val());
+                var malFazlasi = parseInt($('#malfazlasi').val());
+                $("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+                var depoFiyati = parseFloat($('#depofiyati').val());
+                var netfiyat = depoFiyati * alimMiktari / (alimMiktari + malFazlasi);
+                netfiyat = netfiyat.toFixed(4);
+                if (alimMiktari > 0 && malFazlasi > 0 && depoFiyati > 0) {
+                    $("#netfiyat").val(netfiyat);
+                }
+                //en son net fiyatta da virgüle çeviriliyor ki veritabanı kabul etsin.
+                $("#netfiyat").val($("#netfiyat").val().replace(".", ","));
+                //$("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+
+            });
+            //hesaplarken virgülü nokta yapıyoruz ki doğru hesaplasın
+            //çünkü virgül olunca virgülden sonrasını hesaba katmıyor
+            $('#malfazlasi').on('input', function () {//id
+                var alimMiktari = parseInt($('#alimmiktari').val());
+                var malFazlasi = parseInt($('#malfazlasi').val());
+                $("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+                var depoFiyati = parseFloat($('#depofiyati').val());
+                var netfiyat = depoFiyati * alimMiktari / (alimMiktari + malFazlasi);
+                netfiyat = netfiyat.toFixed(4);
+                if (alimMiktari > 0 && malFazlasi > 0 && depoFiyati > 0) {
+                    $("#netfiyat").val(netfiyat);
+                }
+                //en son net fiyatta da virgüle çeviriliyor ki veritabanı kabul etsin.
+                $("#netfiyat").val($("#netfiyat").val().replace(".", ","));
+                //$("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+
+            });
+            //readonly:
+            $('#netfiyat').on('input', function () {//id
+                //var alimMiktari = parseInt($('#alimmiktari').val());
+                //var malFazlasi = parseInt($('#malfazlasi').val());
+                //$("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+                //var depoFiyati = parseFloat($('#depofiyati').val());
+                //var netfiyat = depoFiyati * alimMiktari / (alimMiktari + malFazlasi);
+                //netfiyat = netfiyat.toFixed(4);
+                //if (alimMiktari > 0 && malFazlasi > 0 && depoFiyati > 0) {
+                //    $("#netfiyat").val(netfiyat);
+                //}
+                //en son net fiyatta da virgüle çeviriliyor ki veritabanı kabul etsin.
+                //$("#netfiyat").val($("#netfiyat").val().replace(".", ","));
+                //$("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+
+            });
+            $('#searching').on('input', function () {
+                if ($('#searching').val().length > 3) {
+                    // alert($('#searching').val())
+                    window.location.href = '/Kullanici/Teklifim/Create/' + $('#searching').val();
+                }
+
+            });
+            //test içindi:
+            $('#hesapla').click('input', function () {
+                var alimMiktari = parseInt($('#alimmiktari').val());
+                var malFazlasi = parseInt($('#malfazlasi').val());
+                $("#depofiyati").val($("#depofiyati").val().replace(",", "."));
+
+                var depoFiyati = parseFloat($('#depofiyati').val());
+                var netfiyat = depoFiyati * alimMiktari / (alimMiktari + malFazlasi);
+                alert('alimMiktari:' + alimMiktari)
+                alert('malFazlasi:' + malFazlasi)
+                alert('depoFiyati:' + depoFiyati)
+                alert('netfiyat:' + netfiyat)
+                netfiyat = netfiyat.toFixed(4);
+                alert('netfiyat.fixed(4):' + netfiyat)
+            });
+        });
+    </script>
+
+}

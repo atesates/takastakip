@@ -1,0 +1,123 @@
+﻿@model AlimDetayViewModel
+@{
+    ViewBag.Title = "Alımlar |  Takas Takip";
+
+    var getAjaxAlimlar = new AjaxOptions
+    {
+        AllowCache = false,
+        Url = Url.Action("GetAlimlar", "Alim"),
+        HttpMethod = "GET",
+        UpdateTargetId = "partialView",
+        InsertionMode = InsertionMode.Replace
+        //, LoadingElementId = "islem"
+    };
+}
+@if (TempData["MessageSuccess"] != null)
+{
+    <p>&nbsp;</p>
+    <div class="alert alert-success">
+        <i class="fa fa-info-circle fa-2x"></i>
+        @TempData["MessageSuccess"]
+    </div>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="row sayfaUstBolum">
+            <div class="col-2">
+                <h5>
+                    Tüm Alımlar
+                </h5>
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div id="partialView" class="row sayfaPartialBolum">
+            @*-----------------AlimDetaypartialViewPartialView-------------------------*@
+        </div>
+    </div>
+</div>
+@using (Ajax.BeginForm(null, null, getAjaxAlimlar, new { id = "formAlimlar" }))
+{
+    @Html.Hidden("page")
+}
+
+@Html.Hidden("page")
+
+@section Styles{
+    @Styles.Render("~/bundle/jqueryui/style")
+}
+@section Scripts{
+    @Scripts.Render("~/bundle/queryui/scripts")
+    @Scripts.Render("~/bundle/ajax")
+
+
+    <script>
+        setTimeout(function () {
+            $('.alert-success').addClass("elemaniUcur");
+        }, 2000);
+        setTimeout(function () {
+            $('.alert-danger').addClass("elemaniUcur");
+        }, 2000);
+        $('#formAlimlar').submit();
+
+        function filterTeklifDurum() {
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            //alert('teklifDurumId: ' + teklifDurumId)
+            //alert('alimDurumId :' + alimDurumId)
+            var Page = $('#page').val();
+            $.ajax({
+                type: "GET",
+                url: "../../../Kullanici/Alim/GetAlimlar",
+                data: {
+                    teklifDurumId: teklifDurumId,
+                    alimDurumId: alimDurumId,
+                    page: Page,
+                },
+                dataType: "html",
+                success: function (data) {
+                    $("#partialView").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                    // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+        }
+        function filterAlimDurum() {
+
+            var teklifDurumId = $('#teklifDurumId').val();
+            var alimDurumId = $('#alimDurumId').val();
+            //alert('teklifDurumId: ' + teklifDurumId)
+            //alert('alimDurumId :' + alimDurumId)
+            var Page = $('#page').val();
+            $.ajax({
+                type: "GET",
+                url: "../../../Kullanici/Alim/GetAlimlar",
+                data: {
+                    teklifDurumId: teklifDurumId,
+                    alimDurumId: alimDurumId,
+                    page: Page,
+                },
+                dataType: "html",
+                success: function (data) {
+                    $("#partialView").html(data);
+                },
+                error: function (request, textStatus, thrownError) {
+                    //alert(request.status);
+                    // alert(thrownError);
+                    alert("Lütfen Seçim Yapınız")
+                    //location.reload();
+                }
+            });
+        }
+    </script>
+}
